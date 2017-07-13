@@ -1,5 +1,5 @@
 ## Jackson
-### Gui
+### GUI
 
 Find more information on Jackson gui here:
 https://github.com/Buildcave/jackson-gui
