@@ -1,0 +1,28 @@
+{
+  'extends': 'airbnb',
+  'plugins': [
+    'react',
+    'jsx-a11y',
+    'import',
+  ],
+  'env': {
+    'browser': true,
+    'node': true,
+    'meteor': true,
+  },
+  'settings': {
+    'import/resolver': 'meteor'
+  },
+  'rules': {
+    # 'no-undef': 'off',
+    'no-underscore-dangle': [0, 'never'],
+    'func-names': [0, 'as-needed'],
+    'import/no-extraneous-dependencies': 'off',
+    'import/extensions': ['off', 'never'],
+    'import/no-absolute-path': ['off', 'never'],
+    'consistent-return': ['off', 'never'],
+    'import/prefer-default-export': ['off', 'never'],
+    'react/jsx-filename-extension': ['error', { 'extensions': ['.js', '.jsx'] }]
+  },
+  'parser': 'babel-eslint'
+}

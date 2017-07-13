@@ -1,0 +1,34 @@
+{
+  "name": "jackson-gui",
+  "private": true,
+  "scripts": {
+    "start": "meteor run",
+    "deploy": "DEPLOY_HOSTNAME=galaxy.meteor.com meteor deploy landerrs.buildcave.com --settings ./settings.json",
+    "dev": "MONGO_URL=mongodb://jackson:Wewillrockyou1986!@ds153761-a0.mlab.com:53761,ds153761-a1.mlab.com:53761/test?replicaSet=rs-ds153761 meteor run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Buildcave/jackson-gui.git"
+  },
+  "author": "Buildcave, LLC",
+  "bugs": {
+    "url": "https://github.com/Buildcave/jackson-gui/issues"
+  },
+  "homepage": "https://github.com/Buildcave/jackson-gui#readme",
+  "dependencies": {
+    "babel-runtime": "^6.20.0",
+    "meteor-node-stubs": "~0.2.4"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.1.4",
+    "babel-preset-react": "^6.16.0",
+    "babel-eslint": "^7.1.1",
+    "eslint-plugin-meteor": "^4.0.1",
+    "eslint": "^3.19.0",
+    "validate-commit-msg": "2.12.1",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^5.0.3",
+    "eslint-plugin-react": "^7.0.1"
+  }
+}
