@@ -1,8 +1,14 @@
 import React from 'react';
 
+import '/imports/ui/css/app.scss';
+
+import Header from './header';
+import Login from './login';
+
 const App = () => (
-  <div>
-    App is here baby!
+  <div className="wrapper">
+    <Header />
+    <Login />
   </div>
 );
 

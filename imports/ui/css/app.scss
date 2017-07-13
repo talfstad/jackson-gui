@@ -1,0 +1,26 @@
+@import './metronic_v4.7.5/sass/bootstrap.scss';
+@import './metronic_v4.7.5/sass/layouts/layout5/layout.scss';
+@import './metronic_v4.7.5/sass/layouts/layout5/custom.scss';
+@import './metronic_v4.7.5/sass/global/components.scss';
+@import './metronic_v4.7.5/sass/global/plugins.scss';
+@import './metronic_v4.7.5/sass/pages/login-2.scss';
+@import url('https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css');
+
+
+.login {
+  background: transparent;
+  margin-top: 150px;
+
+  .content {
+    .form-control {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      @include placeholder(#aaa);
+    }
+  }
+
+  .btn {
+    background-color: #009dc7 !important;
+    border: 1px solid #72a9cc !important;
+  }
+}
