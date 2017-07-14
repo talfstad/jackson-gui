@@ -1,4 +1,5 @@
 import React from 'react';
+import RequireAuth from '../auth/hocs/require-auth';
 
 const temp = () => (
   <div className="nav-collapse collapse navbar-collapse navbar-responsive-collapse">
@@ -587,4 +588,4 @@ const temp = () => (
   </div>
 );
 
-export default temp;
+export default RequireAuth(temp);

@@ -1,37 +1,48 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {
+  Route,
+  Redirect,
+} from 'react-router-dom';
 
 export default function (ComposedComponent) {
-  class Authentication extends Component {
+  class RequireAuth extends Component {
     static propTypes = {
-      authenticated: PropTypes.bool,
+      user: PropTypes.shape({
+        _id: PropTypes.string,
+      }),
+      location: PropTypes.shape({}),
     }
 
     static defaultProps = {
-      authenticated: false,
-    }
-
-    componentWillMount() {
-      if (!this.props.authenticated) {
-        this.context.router.push('/');
-      }
-    }
-
-    // called when re-rendered, or gets a new set of props
-    // so this triggers an authentication ?
-    componentWillUpdate() {
-      this.context.router.push('/');
+      user: null,
+      location: null,
     }
 
     render() {
-      return <ComposedComponent {...this.props} />;
+      return (
+        <Route
+          render={() => (
+            _.isUndefined(this.props.user._id) ?
+              <Redirect
+                to={{
+                  pathname: '/login',
+                  state: { from: this.props.location },
+                }}
+              />
+            :
+              <ComposedComponent {...this.props} />
+          )}
+        />
+      );
     }
   }
 
   function mapStateToProps(state) {
-    return { authenticated: state.auth.authenticated };
+    return { user: state.user };
   }
 
-  return connect(mapStateToProps)(Authentication);
+  return connect(mapStateToProps)(RequireAuth);
 }
