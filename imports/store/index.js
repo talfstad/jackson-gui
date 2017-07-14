@@ -2,6 +2,7 @@ import { Tracker } from 'meteor/tracker';
 import { applyMiddleware, createStore, compose } from 'redux';
 import createReactiveMiddlewares from 'meteor-redux-middlewares';
 import thunk from 'redux-thunk';
+
 import rootReducer from '/imports/reducers';
 
 const {

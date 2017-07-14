@@ -1,4 +1,5 @@
 import React from 'react';
+import RequireNoAuth from '../hocs/require-no-auth';
 
 const Login = () => (
   <div className="login">
@@ -31,4 +32,4 @@ const Login = () => (
   </div>
 );
 
-export default Login;
+export default RequireNoAuth(Login);

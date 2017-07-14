@@ -1,7 +1,7 @@
 import React from 'react';
 
-const temp = () =>
-  (<div className="nav-collapse collapse navbar-collapse navbar-responsive-collapse">
+const temp = () => (
+  <div className="nav-collapse collapse navbar-collapse navbar-responsive-collapse">
     <ul className="nav navbar-nav">
       <li className="dropdown dropdown-fw dropdown-fw-disabled  active open selected">
         <a href="#jkfj" className="text-uppercase">
@@ -584,6 +584,7 @@ const temp = () =>
         </ul>
       </li>
     </ul>
-  </div>);
+  </div>
+);
 
 export default temp;
