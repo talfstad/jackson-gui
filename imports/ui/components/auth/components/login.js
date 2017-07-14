@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { logUserIn } from '/imports/actions/user/login';
+import {
+  logUserIn,
+} from '/imports/actions/user/login';
 
 import RequireNoAuth from '../hocs/require-no-auth';
 

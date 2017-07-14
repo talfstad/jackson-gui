@@ -16,6 +16,10 @@ const UserSchema = new SimpleSchema({
   'emails.$.address': {
     type: EmailAddress,
   },
+  services: {
+    type: Object,
+    blackbox: true,
+  },
   createdAt: {
     type: Date,
   },
