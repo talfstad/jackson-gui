@@ -29,7 +29,7 @@ export default function (ComposedComponent) {
       return (
         <Route
           render={() => {
-            if (_.isUndefined(user.loggingIn) || user.loggingIn) {
+            if (_.isUndefined(user.loggingIn) || user.loggingIn || user.loggingOut) {
               return <noscript />;
             }
 

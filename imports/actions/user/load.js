@@ -8,6 +8,7 @@ export const loadUser = () =>
     key: 'user',
     get: () => ({
       loggingIn: Meteor.loggingIn(),
+      loggingOut: Meteor.loggingOut(),
       ...(Meteor.user()),
     }),
   });

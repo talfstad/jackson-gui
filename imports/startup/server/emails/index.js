@@ -1,5 +1,5 @@
 Accounts.urls.resetPassword = token =>
-  Meteor.absoluteUrl(`reset-password/${token}`);
+  Meteor.absoluteUrl(`login/reset-password/${token}`);
 
 Accounts.emailTemplates.resetPassword.from = () => 'no-reply@landerrs.buildcave.com';
 

@@ -2,10 +2,12 @@ import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
 import ValidateLoginSchema from '/imports/api/meteor/schemas/validation/login';
 import ForgotPasswordValidationSchema from '/imports/api/meteor/schemas/validation/forgot-password';
+import ValidateResetPasswordSchema from '/imports/api/meteor/schemas/validation/reset-password';
 
 export const LOGIN_ERRORS = 'LOGIN_ERRORS';
 export const CREATE_USER_ERRORS = 'CREATE_USER_ERRORS';
 export const FORGOT_PASSWORD_ERRORS = 'FORGOT_PASSWORD_ERRORS';
+export const RESET_PASSWORD_ERRORS = 'RESET_PASSWORD_ERRORS';
 
 // Intent: thunk, never calls dispatch, just logs user out
 export const logUserOut = () => () =>
@@ -124,6 +126,50 @@ export const forgotPassword = ({ email }) => (dispatch) => {
 
     dispatch({
       type: FORGOT_PASSWORD_ERRORS,
+      payload: validationErrors,
+    });
+  }
+};
+
+export const resetPassword = ({ token, password, confirmPassword }) => (dispatch) => {
+  const resetPasswordFormValidationContext = ValidateResetPasswordSchema.namedContext();
+  resetPasswordFormValidationContext.validate({ password, confirmPassword });
+
+  if (resetPasswordFormValidationContext.isValid()) {
+    // Intent: verify passwords match
+    if (password !== confirmPassword) {
+      dispatch({
+        type: RESET_PASSWORD_ERRORS,
+        payload: [{
+          name: 'confirm-password',
+          message: 'Passwords do not match',
+        }],
+      });
+    } else {
+      Accounts.resetPassword(token, password, (resetError) => {
+        if (resetError) {
+          dispatch({
+            type: RESET_PASSWORD_ERRORS,
+            payload: [{
+              name: 'confirm-password',
+              message: resetError.reason,
+            }],
+          });
+        } else {
+          dispatch({
+            type: RESET_PASSWORD_ERRORS,
+            payload: [],
+          });
+        }
+      });
+    }
+  } else {
+    // Map simplschema validation errors to error messages
+    const validationErrors = _.map(resetPasswordFormValidationContext.validationErrors(), o =>
+      _.extend({ message: resetPasswordFormValidationContext.keyErrorMessage(o.name) }, o));
+
+    dispatch({
+      type: RESET_PASSWORD_ERRORS,
       payload: validationErrors,
     });
   }

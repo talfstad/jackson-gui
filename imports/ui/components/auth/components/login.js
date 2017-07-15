@@ -8,6 +8,7 @@ import {
 
 import RequireNoAuth from '../hocs/require-no-auth';
 import ForgotPassword from './forgot-password';
+import ResetPassword from './reset-password';
 
 class Login extends Component {
   getErrorForField(field) {
@@ -101,6 +102,11 @@ class Login extends Component {
             exact
             path={`${match.url}/forgot-password`}
             component={ForgotPassword}
+          />
+          <Route
+            exact
+            path={`${match.url}/reset-password/:token`}
+            component={ResetPassword}
           />
         </div>
       </div>

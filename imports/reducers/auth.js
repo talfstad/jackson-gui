@@ -1,6 +1,7 @@
 import {
   LOGIN_ERRORS,
   FORGOT_PASSWORD_ERRORS,
+  RESET_PASSWORD_ERRORS,
 } from '../actions/user/login';
 
 const initialState = {
@@ -10,10 +11,22 @@ const initialState = {
   forgotPassword: {
     errors: [],
   },
+  resetPassword: {
+    errors: [],
+  },
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case RESET_PASSWORD_ERRORS: {
+      return {
+        ...state,
+        resetPassword: {
+          ...state.resetPassword,
+          errors: action.payload,
+        },
+      };
+    }
     case FORGOT_PASSWORD_ERRORS: {
       return {
         ...state,
