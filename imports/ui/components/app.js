@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+} from 'react-router-dom';
+import { Switch } from 'react-router';
 
 import '/imports/ui/css/app.scss';
 import '/imports/ui/css/imports/font-awesome.css';
@@ -9,7 +14,7 @@ import '/imports/ui/css/imports/font-awesome.css';
 import { loadUser } from '/imports/actions/user/load';
 
 import Header from './header';
-import Main from './main';
+import Rips from './rips';
 import Login from './auth/components/login';
 
 class App extends Component {
@@ -23,8 +28,11 @@ class App extends Component {
       <Router>
         <div className="wrapper">
           <Header />
-          <Route path="/" component={Main} />
-          <Route path="/login" component={Login} />
+          <Switch>
+            <Route path="/rips" component={Rips} />
+            <Route path="/login" component={Login} />
+            <Route render={() => <Redirect to="/rips" />} />
+          </Switch>
         </div>
       </Router>
     );

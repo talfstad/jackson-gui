@@ -12,6 +12,9 @@
   margin-top: 150px;
 
   .content {
+    .forget-form {
+      display: block;
+    }
     .form-control {
       background-color: #fff;
       border: 1px solid #ddd;
@@ -21,6 +24,7 @@
   }
 
   .btn {
+    color: #fff;
     background-color: #009dc7 !important;
     border: 1px solid #72a9cc !important;
   }
