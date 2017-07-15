@@ -4,14 +4,13 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import {
-  logUserIn,
+  forgotPassword,
 } from '/imports/actions/user/login';
 
 class ForgotPassword extends Component {
   getErrorForField(field) {
     const { authReducer } = this.props;
-    const { login = {} } = authReducer;
-    const { errors = [] } = login;
+    const { errors = [] } = authReducer.forgotPassword;
     const error = errors.find(o => o.name === field);
     if (error) {
       return <small className="form-text text-danger text-muted">{error.message}</small>;
@@ -19,16 +18,15 @@ class ForgotPassword extends Component {
     return <noscript />;
   }
 
-  handleLogUserIn(e) {
+  handleSendForgotPasswordEmail(e) {
     e.preventDefault();
 
     const {
-      logUserInAction,
+      forgotPasswordAction,
     } = this.props;
 
-    logUserInAction({
+    forgotPasswordAction({
       email: this.emailInput.value,
-      password: this.passwordInput.value,
     });
   }
 
@@ -39,7 +37,7 @@ class ForgotPassword extends Component {
   render() {
     return (
       <form
-        onSubmit={e => this.handleLogUserIn(e)}
+        onSubmit={e => this.handleSendForgotPasswordEmail(e)}
         className="forget-form"
       >
         <div className="form-title">
@@ -78,7 +76,7 @@ ForgotPassword.propTypes = {
     goBack: null,
   }),
   authReducer: PropTypes.shape({}),
-  logUserInAction: PropTypes.func,
+  forgotPasswordAction: PropTypes.func,
 };
 
 ForgotPassword.defaultProps = {
@@ -86,11 +84,11 @@ ForgotPassword.defaultProps = {
   history: {
     goBack: PropTypes.func,
   },
-  logUserInAction: null,
+  forgotPasswordAction: null,
 };
 
 const actions = {
-  logUserInAction: logUserIn,
+  forgotPasswordAction: forgotPassword,
 };
 
 const mapStateToProps = state => ({
