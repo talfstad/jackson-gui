@@ -22,19 +22,30 @@ export default function (ComposedComponent) {
     }
 
     render() {
+      const {
+        user,
+      } = this.props;
+
       return (
         <Route
-          render={() => (
-            _.isUndefined(this.props.user._id) ?
+          render={() => {
+            if (_.isUndefined(user.loggingIn)) {
+              return <noscript />;
+            }
+
+            if (!_.isUndefined(user._id)) {
+              return <ComposedComponent {...this.props} />;
+            }
+
+            return (
               <Redirect
                 to={{
                   pathname: '/login',
                   state: { from: this.props.location },
                 }}
               />
-            :
-              <ComposedComponent {...this.props} />
-          )}
+            );
+          }}
         />
       );
     }
