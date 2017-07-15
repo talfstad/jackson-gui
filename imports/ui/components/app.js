@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import '/imports/ui/css/app.scss';
+import '/imports/ui/css/imports/font-awesome.css';
 
 import { loadUser } from '/imports/actions/user/load';
 
