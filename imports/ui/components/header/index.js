@@ -1,60 +1,35 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import { Link } from 'react-router-dom';
 import { logUserOut } from '/imports/actions/user/login';
+import Nav from './nav';
+import TopbarActions from './topbar-actions';
 
 class Header extends Component {
   handleLogUserOut(e) {
     e.preventDefault();
-
     const { logUserOutAction } = this.props;
-
     logUserOutAction();
   }
 
-  renderTopbarActions() {
+  render() {
     const { user } = this.props;
 
-    if (user._id) {
-      const [email] = user.emails;
-
-      return (
-        <div className="topbar-actions">
-          <div className="btn-group-img btn-group">
-            <button type="button" className="btn btn-sm md-skip dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
-              <span>{email.address}</span>
-              <i className="fa fa-user user-image" />
-            </button>
-            <ul className="dropdown-menu-v2" role="menu">
-              <li>
-                <a
-                  href="/logout"
-                  onClick={e => this.handleLogUserOut(e)}
-                >
-                  <i className="icon-key" /> Log Out
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      );
-    }
-
-    return <noscript />;
-  }
-
-  render() {
     return (
       <header className="page-header">
         <nav className="navbar mega-menu">
           <div className="container-fluid">
             <div className="clearfix navbar-fixed-top">
-              <a id="index" className="page-logo" href="index.html">
+              <Link id="index" to="/rips/manage" className="page-logo">
                 <img src="/images/logo.png" alt="Lander Re-allocation System" />
-              </a>
-              {this.renderTopbarActions()}
+              </Link>
+              <TopbarActions
+                user={user}
+                handleLogUserOut={e => this.handleLogUserOut(e)}
+              />
             </div>
+            <Nav />
           </div>
         </nav>
       </header>

@@ -15,6 +15,7 @@ import { loadUser } from '/imports/actions/user/load';
 
 import Header from './header';
 import Rips from './rips';
+import Offers from './offers';
 import Login from './auth/components/login';
 
 class App extends Component {
@@ -27,9 +28,10 @@ class App extends Component {
     return (
       <Router>
         <div className="wrapper">
-          <Header />
+          <Route path="*" component={Header} />
           <Switch>
             <Route path="/rips" component={Rips} />
+            <Route path="/offers" component={Offers} />
             <Route path="/login" component={Login} />
             <Route render={() => <Redirect to="/rips" />} />
           </Switch>
