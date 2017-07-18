@@ -33,7 +33,7 @@ class App extends Component {
             <Route path="/rips" component={Rips} />
             <Route path="/offers" component={Offers} />
             <Route path="/login" component={Login} />
-            <Route render={() => <Redirect to="/rips" />} />
+            <Route render={() => <Redirect to="/rips/manage" />} />
           </Switch>
         </div>
       </Router>
