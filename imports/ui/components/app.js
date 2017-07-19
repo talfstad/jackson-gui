@@ -16,6 +16,7 @@ import { loadUser, loadUserSub } from '/imports/actions/user/load';
 import Header from './header';
 import Rips from './rips';
 import Offers from './offers';
+import Settings from './settings';
 import Login from './auth/components/login';
 
 class App extends Component {
@@ -36,6 +37,7 @@ class App extends Component {
           <Switch>
             <Route path="/rips" component={Rips} />
             <Route path="/offers" component={Offers} />
+            <Route path="/settings" component={Settings} />
             <Route path="/login" component={Login} />
             <Route render={() => <Redirect to="/rips/manage" />} />
           </Switch>

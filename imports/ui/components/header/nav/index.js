@@ -49,6 +49,22 @@ class Nav extends Component {
           },
         ]}
       />,
+      <NavItem
+        key="3"
+        match={match}
+        history={history}
+        name="Settings"
+        path="/settings"
+        defaultPath="/settings/rs-config"
+        icon="icon-settings"
+        subNav={[
+          {
+            name: 'RS Config',
+            path: '/settings/rs-config',
+            icon: 'icon-settings',
+          },
+        ]}
+      />,
     ];
   }
 

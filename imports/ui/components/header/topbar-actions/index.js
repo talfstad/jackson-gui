@@ -9,14 +9,14 @@ const TopbarActions = (props) => {
     user,
     handleLogUserOut,
   } = props;
-  const [email] = user.emails;
+  const { name } = user;
 
   return (
     <div className="topbar-actions">
       <div className="btn-group-img btn-group">
         <button type="button" className="btn btn-sm md-skip dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
           <AdminInsignia />
-          <span>{email.address}</span>
+          <span>{name}</span>
           <i className="fa fa-user user-image" />
         </button>
         <ul className="dropdown-menu-v2" role="menu">
