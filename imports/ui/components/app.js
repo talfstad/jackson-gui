@@ -11,7 +11,7 @@ import { Switch } from 'react-router';
 import '/imports/ui/css/app.scss';
 import '/imports/ui/css/imports/font-awesome.css';
 
-import { loadUser } from '/imports/actions/user/load';
+import { loadUser, loadUserSub } from '/imports/actions/user/load';
 
 import Header from './header';
 import Rips from './rips';
@@ -20,8 +20,12 @@ import Login from './auth/components/login';
 
 class App extends Component {
   componentDidMount() {
-    const { loadUserAction } = this.props;
+    const {
+      loadUserAction,
+      loadUserSubAction,
+    } = this.props;
     loadUserAction();
+    loadUserSubAction();
   }
 
   render() {
@@ -43,13 +47,16 @@ class App extends Component {
 
 App.propTypes = {
   loadUserAction: PropTypes.func,
+  loadUserSubAction: PropTypes.func,
 };
 
 App.defaultProps = {
   loadUserAction: null,
+  loadUserSubAction: null,
 };
 
 const actions = {
+  loadUserSubAction: loadUserSub,
   loadUserAction: loadUser,
 };
 

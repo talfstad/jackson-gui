@@ -1,6 +1,10 @@
-import { USER_REACTIVE_SOURCE_CHANGED } from '../actions/user/load';
+import {
+  USER_REACTIVE_SOURCE_CHANGED,
+} from '../actions/user/load';
 
-const initialState = {};
+const initialState = {
+  roles: [],
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {

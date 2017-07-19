@@ -30,6 +30,19 @@
   }
 }
 
+.page-header {
+  .navbar {
+    .topbar-actions {
+      .btn-group-img {
+         .btn > span.label-danger {
+           color: #fff;
+         }
+      }
+    }
+  }
+}
+
+
 .dropdown-menu-v2 {
   padding: 10px 0;
 }

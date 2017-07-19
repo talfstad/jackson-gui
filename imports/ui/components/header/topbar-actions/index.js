@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import RenderIfAuth from '../auth/hocs/render-if-auth';
+import RenderIfAuth from '../../auth/hocs/render-if-auth';
+import AdminInsignia from './admin-insignia';
 
 const TopbarActions = (props) => {
   const {
@@ -14,6 +15,7 @@ const TopbarActions = (props) => {
     <div className="topbar-actions">
       <div className="btn-group-img btn-group">
         <button type="button" className="btn btn-sm md-skip dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
+          <AdminInsignia />
           <span>{email.address}</span>
           <i className="fa fa-user user-image" />
         </button>
