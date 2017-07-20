@@ -34,16 +34,11 @@ class Nav extends Component {
         history={history}
         name="Offers"
         path="/offers"
-        defaultPath="/offers/overview"
+        defaultPath="/offers/manage"
         icon="icon-basket"
         subNav={[
           {
-            name: 'Overview',
-            path: '/offers/overview',
-            icon: 'icon-bar-chart',
-          },
-          {
-            name: 'Manage1',
+            name: 'Manage',
             path: '/offers/manage',
             icon: 'icon-list',
           },

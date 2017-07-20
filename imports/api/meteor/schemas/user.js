@@ -17,6 +17,7 @@ const UserSchema = new SimpleSchema({
     type: EmailAddress,
   },
   name: {
+    optional: true,
     type: String,
   },
   services: {
