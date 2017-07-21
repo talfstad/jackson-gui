@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Table from './table';
+import ManageOffersTable from './manage-offers-table';
 
 const ManageOffers = () => (
   <div className="container-fluid">
@@ -19,7 +19,22 @@ const ManageOffers = () => (
           <div className="page-content-col">
             <div className="row">
               <div className="col-md-12">
-                <Table />
+                <div className="portlet light bordered">
+                  <div className="portlet-title">
+                    <div className="caption">
+                      <i className="icon-list font-green" />
+                      <span className="caption-subject font-green bold uppercase">
+                        Offers List
+                      </span>
+                    </div>
+                    <div className="actions">
+                      <a className="btn btn-circle btn-icon-only btn-default" href="#fdf">
+                        <i className="fa fa-plus" />
+                      </a>
+                    </div>
+                  </div>
+                  <ManageOffersTable />
+                </div>
               </div>
             </div>
           </div>

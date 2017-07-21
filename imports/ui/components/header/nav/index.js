@@ -40,7 +40,7 @@ class Nav extends Component {
           {
             name: 'Manage',
             path: '/offers/manage',
-            icon: 'icon-list',
+            icon: 'icon-settings',
           },
         ]}
       />,
