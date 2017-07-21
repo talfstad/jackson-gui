@@ -5,13 +5,23 @@ import { connect } from 'react-redux';
 import {
   fetchOffers,
   stopOffersSub,
+  fetchOffersCount,
 } from '/imports/actions/offers';
 
 import 'react-table/react-table.css';
 
 class ManageOffersTable extends Component {
+  componentWillMount() {
+    const {
+      fetchOffersCountAction,
+    } = this.props;
+    fetchOffersCountAction();
+  }
+
   componentWillUnmount() {
-    const { stopOffersSubAction } = this.props;
+    const {
+      stopOffersSubAction,
+    } = this.props;
     stopOffersSubAction();
   }
 
@@ -23,7 +33,6 @@ class ManageOffersTable extends Component {
     } = state;
 
     const { fetchOffersAction } = this.props;
-    // call action to get page with page and page size
     fetchOffersAction({ page, pageSize });
 
     // sorted is an array [{ desc: false, id: 'userName' }]
@@ -56,7 +65,7 @@ class ManageOffersTable extends Component {
             className="-striped -highlight"
             manual
             columns={columns}
-            defaultPageSize={10}
+            defaultPageSize={this.props.defaultPageSize}
             onFetchData={(state, instance) => this.onFetchData(state, instance)}
             pages={this.props.pages}
             data={this.props.list}
@@ -71,27 +80,34 @@ class ManageOffersTable extends Component {
 ManageOffersTable.propTypes = {
   fetchOffersAction: PropTypes.func,
   stopOffersSubAction: PropTypes.func,
+  fetchOffersCountAction: PropTypes.func,
   list: PropTypes.arrayOf(PropTypes.object),
   loading: PropTypes.bool,
   pages: PropTypes.number,
+  defaultPageSize: PropTypes.number,
 };
 
 ManageOffersTable.defaultProps = {
   stopOffersSubAction: null,
   fetchOffersAction: null,
+  fetchOffersCountAction: null,
   list: [],
   loading: true,
-  pages: 21,
+  pages: -1,
+  defaultPageSize: 10,
 };
 
 const actions = {
   fetchOffersAction: fetchOffers,
   stopOffersSubAction: stopOffersSub,
+  fetchOffersCountAction: fetchOffersCount,
 };
 
 const mapStateToProps = state => ({
   list: state.offers.offerList,
   loading: !state.offers.ready,
+  pages: state.offers.pages,
+  defaultPageSize: state.offers.defaultPageSize,
 });
 
 export default connect(mapStateToProps, actions)(ManageOffersTable);
