@@ -33,12 +33,7 @@ class ManageOffersTable extends Component {
     } = state;
 
     const { fetchOffersAction } = this.props;
-    fetchOffersAction({ page, pageSize });
-
-    // sorted is an array [{ desc: false, id: 'userName' }]
-    // console.log('on fetch data');
-    // console.log(state);
-    // console.log(instance);
+    fetchOffersAction({ page, pageSize, sorted });
   }
 
   render() {

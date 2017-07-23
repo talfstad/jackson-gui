@@ -15,7 +15,7 @@ export const OFFERS_SUB_SUBSCRIPTION_CHANGED = `${OFFERS_SUB}_SUBSCRIPTION_CHANG
 
 export const UPDATE_OFFERS_PAGE_SIZE = 'UPDATE_OFFERS_PAGE_SIZE';
 
-export const fetchOffers = ({ page, pageSize }) => (dispatch) => {
+export const fetchOffers = ({ page, pageSize, sorted }) => (dispatch) => {
   dispatch({
     type: UPDATE_OFFERS_PAGE_SIZE,
     payload: pageSize,
@@ -25,7 +25,7 @@ export const fetchOffers = ({ page, pageSize }) => (dispatch) => {
   dispatch(startSubscription({
     key: OFFERS_SUB,
     get: () => Offers.find().fetch(),
-    subscribe: () => Meteor.subscribe(OFFERS_SUB, { page, pageSize }),
+    subscribe: () => Meteor.subscribe(OFFERS_SUB, { page, pageSize, sorted }),
   }));
 };
 
