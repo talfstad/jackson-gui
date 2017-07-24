@@ -3,11 +3,17 @@ import {
   OFFERS_SUB_SUBSCRIPTION_READY,
   OFFERS_COUNT_SUB_CHANGED,
   UPDATE_OFFERS_PAGE_SIZE,
+  UPDATE_OFFERS_SEARCH,
+  UPDATE_OFFERS_PAGE,
+  UPDATE_OFFERS_SORTED,
 } from '../actions/offers';
 
 const initialState = {
   offerList: [],
   pages: -1,
+  page: 0,
+  search: '',
+  sorted: [],
   pageSize: 10,
   defaultPageSize: 10,
   count: 0,
@@ -15,6 +21,24 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case UPDATE_OFFERS_SEARCH: {
+      return {
+        ...state,
+        search: action.payload,
+      };
+    }
+    case UPDATE_OFFERS_PAGE: {
+      return {
+        ...state,
+        page: action.payload,
+      };
+    }
+    case UPDATE_OFFERS_SORTED: {
+      return {
+        ...state,
+        sorted: action.payload,
+      };
+    }
     case UPDATE_OFFERS_PAGE_SIZE: {
       return {
         ...state,

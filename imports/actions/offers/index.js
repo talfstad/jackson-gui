@@ -13,28 +13,46 @@ export const OFFERS_SUB = 'OFFERS';
 export const OFFERS_SUB_SUBSCRIPTION_READY = `${OFFERS_SUB}_SUBSCRIPTION_READY`;
 export const OFFERS_SUB_SUBSCRIPTION_CHANGED = `${OFFERS_SUB}_SUBSCRIPTION_CHANGED`;
 
+export const UPDATE_OFFERS_SEARCH = 'UPDATE_OFFERS_SEARCH';
+export const UPDATE_OFFERS_PAGE = 'UPDATE_OFFERS_PAGE';
+export const UPDATE_OFFERS_SORTED = 'UPDATE_OFFERS_SORTED';
 export const UPDATE_OFFERS_PAGE_SIZE = 'UPDATE_OFFERS_PAGE_SIZE';
 
-export const fetchOffers = ({ page, pageSize, sorted }) => (dispatch) => {
+export const fetchOffers = ({ page, pageSize, sorted, search }) => (dispatch) => {
   dispatch({
     type: UPDATE_OFFERS_PAGE_SIZE,
     payload: pageSize,
   });
 
+  dispatch({
+    type: UPDATE_OFFERS_SEARCH,
+    payload: search,
+  });
+
+  dispatch({
+    type: UPDATE_OFFERS_PAGE,
+    payload: page,
+  });
+
+  dispatch({
+    type: UPDATE_OFFERS_SORTED,
+    payload: sorted,
+  });
+
+  dispatch(stopSubscription(OFFERS_COUNT_SUB));
+  dispatch(startSubscription({
+    key: OFFERS_COUNT_SUB,
+    get: () => Counter.get('offersCount'),
+    subscribe: () => Meteor.subscribe(OFFERS_COUNT_SUB, { search }),
+  }));
+
   dispatch(stopSubscription(OFFERS_SUB));
   dispatch(startSubscription({
     key: OFFERS_SUB,
     get: () => Offers.find().fetch(),
-    subscribe: () => Meteor.subscribe(OFFERS_SUB, { page, pageSize, sorted }),
+    subscribe: () => Meteor.subscribe(OFFERS_SUB, { page, pageSize, sorted, search }),
   }));
 };
-
-export const fetchOffersCount = () =>
-  startSubscription({
-    key: OFFERS_COUNT_SUB,
-    get: () => Counter.get('offersCount'),
-    subscribe: () => Meteor.subscribe(OFFERS_COUNT_SUB),
-  });
 
 export const stopOffersSub = () => (dispatch) => {
   dispatch(stopSubscription(OFFERS_SUB));

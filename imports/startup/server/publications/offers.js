@@ -6,7 +6,7 @@ import {
   OFFERS_COUNT_SUB,
 } from '/imports/actions/offers';
 
-Meteor.publish(OFFERS_SUB, function ({ page, pageSize, sorted }) {
+Meteor.publish(OFFERS_SUB, function ({ page, pageSize, sorted, search }) {
   // Map the array that comes in from react tables to the sort object
   // mongo likes.
   const sort = sorted.reduce((accumulator, val) =>
@@ -17,7 +17,13 @@ Meteor.publish(OFFERS_SUB, function ({ page, pageSize, sorted }) {
 
   // Admin query
   if (Roles.userIsInRole(this.userId, 'admin')) {
-    return Offers.find({}, {
+    return Offers.find({
+      $or: [
+        { name: { $regex: search, $options: 'i' } },
+        { url: { $regex: search, $options: 'i' } },
+        { userName: { $regex: search, $options: 'i' } },
+      ],
+    }, {
       skip: (pageSize * page),
       limit: pageSize,
       sort,
@@ -25,18 +31,40 @@ Meteor.publish(OFFERS_SUB, function ({ page, pageSize, sorted }) {
   }
 
   // NON-Admin query
-  return Offers.find({ userId: this.userId }, {
+  return Offers.find({
+    userId: this.userId,
+    $or: [
+      { name: { $regex: search, $options: 'i' } },
+      { url: { $regex: search, $options: 'i' } },
+      { userName: { $regex: search, $options: 'i' } },
+    ],
+  }, {
     skip: (pageSize * page),
     limit: pageSize,
     sort,
   });
 });
 
-Meteor.publish(OFFERS_COUNT_SUB, function () {
+// TODO: pass in the search term. whenever we change the query, we need to
+// re-sub to the count just as we resub to our data query.
+Meteor.publish(OFFERS_COUNT_SUB, function ({ search }) {
   if (Roles.userIsInRole(this.userId, 'admin')) {
-    return new Counter('offersCount', Offers.find({}));
+    return new Counter('offersCount', Offers.find({
+      $or: [
+        { name: { $regex: search, $options: 'i' } },
+        { url: { $regex: search, $options: 'i' } },
+        { userName: { $regex: search, $options: 'i' } },
+      ],
+    }), 500);
   }
 
   // NON-Admin query
-  return new Counter('offersCount', Offers.find({ userId: this.userId }));
+  return new Counter('offersCount', Offers.find({
+    userId: this.userId,
+    $or: [
+      { name: { $regex: search, $options: 'i' } },
+      { url: { $regex: search, $options: 'i' } },
+      { userName: { $regex: search, $options: 'i' } },
+    ],
+  }), 500);
 });
