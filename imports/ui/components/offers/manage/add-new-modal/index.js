@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Modal from '/imports/ui/components/modal';
 
 import { addNewOffer } from '/imports/actions/offers';
 
 import UserSelectInput from './user-select-input';
-
 
 class AddNewModal extends Component {
   componentDidMount() {
@@ -24,13 +22,6 @@ class AddNewModal extends Component {
     });
   }
 
-  componentDidUpdate() {
-    // const { errors } = this.props;
-    // if (errors.length < 1) {
-    //   this.closeModal();
-    // }
-  }
-
   componentWillUnmount() {
     // Intent: Remove backdrop to allow for a quick
     // back button press.
@@ -38,10 +29,16 @@ class AddNewModal extends Component {
   }
 
   getErrorForField(field, defaultHelp) {
-    const { errors } = this.props;
-    const error = errors.find(o => o.name === field);
+    const { addOfferErrors } = this.props;
+    const error = addOfferErrors.find(o => o.name === field);
     if (error) {
-      return <small className="form-text text-danger text-muted">{error.message}</small>;
+      return (
+        <small
+          className="form-text text-danger text-muted"
+        >
+          {error.message}
+        </small>
+      );
     }
     return (
       <small className="help-block">
@@ -77,58 +74,57 @@ class AddNewModal extends Component {
 
   render() {
     return (
-      <Modal ref={(c) => { this.modal = c; }}>
-        <div
-          ref={(c) => { this.el = c; }}
-          className="modal fade draggable-modal"
-          tabIndex="-1"
-          data-backdrop="static"
-        >
-          <div className="add-offer-modal modal-dialog" role="document">
-            <form onSubmit={e => this.handleAddNewOffer(e)}>
-              <div className="modal-content">
-                <div className="modal-header">
-                  <button type="button" className="close" data-dismiss="modal" aria-hidden="true" />
-                  <h4 className="modal-title">Add New Offer</h4>
-                </div>
-                <div className="modal-body">
-                  <div className="form-group">
-                    <label htmlFor="password">Offer Name</label>
-                    <input
-                      ref={(c) => { this.offerNameInput = c; }}
-                      id="offer-name"
-                      type="input"
-                      className="form-control"
-                      placeholder="Enter Offer Name"
-                    />
-                    {this.getErrorForField('name', 'The offer name is a unique identifier used to select this offer when adding it to a rip.')}
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="confirm-password">Offer URL</label>
-                    <input
-                      ref={(c) => { this.offerUrlInput = c; }}
-                      id="offer-url"
-                      type="input"
-                      className="form-control"
-                      placeholder="Enter Offer URL"
-                    />
-                    {this.getErrorForField('url', 'The offer URL is where we send the visitor from the ripped landing page.')}
-                  </div>
-                  <UserSelectInput
-                    inputRef={(c) => { this.offerUserInput = c; }}
-                    users={this.props.users}
-                    getErrorForField={field => this.getErrorForField(field)}
-                  />
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn dark btn-outline" data-dismiss="modal">Cancel</button>
-                  <button type="submit" className="btn green">Submit</button>
-                </div>
+      <div
+        ref={(c) => { this.el = c; }}
+        className="modal fade draggable-modal"
+        tabIndex="-1"
+        data-backdrop="static"
+      >
+        <div className="add-offer-modal modal-dialog" role="document">
+          <form onSubmit={e => this.handleAddNewOffer(e)}>
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="close" data-dismiss="modal" aria-hidden="true" />
+                <h4 className="modal-title">Add New Offer</h4>
               </div>
-            </form>
-          </div>
+              <div className="modal-body">
+                <div className="form-group">
+                  <label htmlFor="password">Offer Name</label>
+                  <input
+                    ref={(c) => { this.offerNameInput = c; }}
+                    id="offer-name"
+                    type="input"
+                    className="form-control"
+                    placeholder="Enter Offer Name"
+                  />
+                  {this.getErrorForField('name', 'The offer name is a unique identifier used to select this offer when adding it to a rip.')}
+                </div>
+                <div className="form-group">
+                  <label htmlFor="confirm-password">Offer URL</label>
+                  <input
+                    ref={(c) => { this.offerUrlInput = c; }}
+                    id="offer-url"
+                    type="input"
+                    className="form-control"
+                    placeholder="Enter Offer URL"
+                  />
+                  {this.getErrorForField('url', 'The offer URL is where we send the visitor from the ripped landing page.')}
+                </div>
+                <UserSelectInput
+                  inputRef={(c) => { this.offerUserInput = c; }}
+                  users={this.props.users}
+                  getErrorForField={(field, defaultHelp) =>
+                    this.getErrorForField(field, defaultHelp)}
+                />
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn dark btn-outline" data-dismiss="modal">Cancel</button>
+                <button type="submit" className="btn green">Submit</button>
+              </div>
+            </div>
+          </form>
         </div>
-      </Modal>
+      </div>
     );
   }
 }
@@ -137,19 +133,19 @@ AddNewModal.propTypes = {
   history: PropTypes.shape({}),
   users: PropTypes.arrayOf(PropTypes.object),
   addNewOfferAction: PropTypes.func,
-  errors: PropTypes.arrayOf(PropTypes.object),
+  addOfferErrors: PropTypes.arrayOf(PropTypes.object),
 };
 
 AddNewModal.defaultProps = {
   addNewOfferAction: null,
   history: {},
   users: [],
-  errors: [],
+  addOfferErrors: [],
 };
 
 const mapStateToProps = state => ({
   users: state.users.userList,
-  errors: state.offers.addNewErrors,
+  addOfferErrors: state.offers.addNewErrors,
 });
 
 const actions = {

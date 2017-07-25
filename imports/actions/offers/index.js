@@ -65,16 +65,23 @@ export const stopOffersSub = () => (dispatch) => {
 
 export const addNewOffer = ({ name, url, userId, userName }) => (dispatch) => {
   const addNewOfferValidationSchema = AddNewOfferValidationSchema.namedContext();
-  addNewOfferValidationSchema.validate(
-    addNewOfferValidationSchema.clean({ name, url }),
-  );
+  addNewOfferValidationSchema.validate({ name, url });
 
   if (addNewOfferValidationSchema.isValid()) {
     Meteor.call('addNewOffer', { name, url, userId, userName }, (error) => {
       if (error) {
-
+        dispatch({
+          type: ADD_NEW_OFFER_ERRORS,
+          payload: [{
+            name: 'name',
+            message: error.reason,
+          }],
+        });
       } else {
-
+        dispatch({
+          type: ADD_NEW_OFFER_ERRORS,
+          payload: [],
+        });
       }
     });
   } else {
@@ -82,7 +89,7 @@ export const addNewOffer = ({ name, url, userId, userName }) => (dispatch) => {
     const validationErrors = _.map(addNewOfferValidationSchema.validationErrors(), o =>
       _.extend({ message: addNewOfferValidationSchema.keyErrorMessage(o.name) }, o));
 
-    dispatch({
+    return dispatch({
       type: ADD_NEW_OFFER_ERRORS,
       payload: validationErrors,
     });
