@@ -23,6 +23,8 @@ class UserSelectInput extends Component {
       <option
         key={user._id}
         value={user._id}
+        data-user-name={user.name}
+        data-user-id={user._id}
       >
         {user.name}
       </option>
@@ -33,14 +35,15 @@ class UserSelectInput extends Component {
     return (
       <div className="form-group">
         <label htmlFor="offer-user">Offer User</label>
-        <select className="bs-select form-control" data-live-search="true" data-size="8">
+        <select
+          ref={this.props.inputRef}
+          className="bs-select form-control"
+          data-live-search="true"
+          data-size="8"
+        >
           {this.buildUserList()}
         </select>
-        <small className="help-block">
-          Select which user this offer will be available for.
-          This option is only available to admin users.
-        </small>
-        {this.props.getErrorForField('offer-user')}
+        {this.props.getErrorForField('offer-user', 'Select which user this offer will be available for. This option is only available to admin users.')}
       </div>
     );
   }
@@ -49,11 +52,13 @@ class UserSelectInput extends Component {
 UserSelectInput.propTypes = {
   getErrorForField: PropTypes.func,
   users: PropTypes.arrayOf(PropTypes.object),
+  inputRef: PropTypes.func,
 };
 
 UserSelectInput.defaultProps = {
   getErrorForField: null,
   users: [],
+  inputRef: null,
 };
 
 export default RenderIfAdmin(UserSelectInput);

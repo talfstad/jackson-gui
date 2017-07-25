@@ -4,6 +4,8 @@ import {
   stopSubscription,
 } from 'meteor-redux-middlewares';
 
+import AddNewOfferValidationSchema from '/imports/api/meteor/schemas/validation/add-new-offer';
+
 import { Offers } from '/imports/api/meteor/collections';
 
 export const OFFERS_COUNT_SUB = 'OFFERS_COUNT';
@@ -17,6 +19,8 @@ export const UPDATE_OFFERS_SEARCH = 'UPDATE_OFFERS_SEARCH';
 export const UPDATE_OFFERS_PAGE = 'UPDATE_OFFERS_PAGE';
 export const UPDATE_OFFERS_SORTED = 'UPDATE_OFFERS_SORTED';
 export const UPDATE_OFFERS_PAGE_SIZE = 'UPDATE_OFFERS_PAGE_SIZE';
+
+export const ADD_NEW_OFFER_ERRORS = 'ADD_NEW_OFFER_ERRORS';
 
 export const fetchOffers = ({ page, pageSize, sorted, search }) => (dispatch) => {
   dispatch({
@@ -57,4 +61,31 @@ export const fetchOffers = ({ page, pageSize, sorted, search }) => (dispatch) =>
 export const stopOffersSub = () => (dispatch) => {
   dispatch(stopSubscription(OFFERS_SUB));
   dispatch(stopSubscription(OFFERS_COUNT_SUB));
+};
+
+export const addNewOffer = ({ name, url, userId, userName }) => (dispatch) => {
+  const addNewOfferValidationSchema = AddNewOfferValidationSchema.namedContext();
+  addNewOfferValidationSchema.validate(
+    addNewOfferValidationSchema.clean({ name, url }),
+  );
+
+  if (addNewOfferValidationSchema.isValid()) {
+    Meteor.call('addNewOffer', { name, url, userId, userName }, (error) => {
+      if (error) {
+
+      } else {
+
+      }
+    });
+  } else {
+    // Map simplschema validation errors to error messages
+    const validationErrors = _.map(addNewOfferValidationSchema.validationErrors(), o =>
+      _.extend({ message: addNewOfferValidationSchema.keyErrorMessage(o.name) }, o));
+
+    dispatch({
+      type: ADD_NEW_OFFER_ERRORS,
+      payload: validationErrors,
+    });
+  }
+  // call addOffer meteor method. This
 };

@@ -6,6 +6,7 @@ import {
   UPDATE_OFFERS_SEARCH,
   UPDATE_OFFERS_PAGE,
   UPDATE_OFFERS_SORTED,
+  ADD_NEW_OFFER_ERRORS,
 } from '../actions/offers';
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
   search: '',
   sorted: [],
   pageSize: 10,
+  addNewErrors: [],
   defaultPageSize: 10,
   count: 0,
 };
@@ -64,6 +66,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         offerList: action.payload,
+      };
+    }
+    case ADD_NEW_OFFER_ERRORS: {
+      return {
+        ...state,
+        addNewErrors: action.payload,
       };
     }
     default:

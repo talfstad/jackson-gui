@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Modal from '/imports/ui/components/modal';
+
+import { addNewOffer } from '/imports/actions/offers';
+
 import UserSelectInput from './user-select-input';
+
 
 class AddNewModal extends Component {
   componentDidMount() {
@@ -11,14 +15,18 @@ class AddNewModal extends Component {
     $(this.el).modal('show');
     $(this.el).draggable({ handle: '.modal-header' });
 
+    $(this.el).on('shown.bs.modal', () => {
+      $(this.offerNameInput).focus();
+    });
+
     $(this.el).on('hidden.bs.modal', () => {
       history.push('/offers/manage');
     });
   }
 
   componentDidUpdate() {
-    // const { resetPasswordErrors } = this.props;
-    // if (resetPasswordErrors.length < 1) {
+    // const { errors } = this.props;
+    // if (errors.length < 1) {
     //   this.closeModal();
     // }
   }
@@ -29,13 +37,17 @@ class AddNewModal extends Component {
     $('.modal-backdrop').remove();
   }
 
-  getErrorForField(field) {
-    // const { resetPasswordErrors } = this.props;
-    // const error = resetPasswordErrors.find(o => o.name === field);
-    // if (error) {
-    //   return <small className="form-text text-danger text-muted">{error.message}</small>;
-    // }
-    // return <noscript />;
+  getErrorForField(field, defaultHelp) {
+    const { errors } = this.props;
+    const error = errors.find(o => o.name === field);
+    if (error) {
+      return <small className="form-text text-danger text-muted">{error.message}</small>;
+    }
+    return (
+      <small className="help-block">
+        {defaultHelp}
+      </small>
+    );
   }
 
   closeModal() {
@@ -43,18 +55,24 @@ class AddNewModal extends Component {
   }
 
   handleAddNewOffer(e) {
-    // if (e) e.preventDefault();
-    // const {
-    //   resetPassword,
-    // } = this.props;
-    // const token = this.getPasswordToken();
-    // const password = this.passwordInput.value;
-    // const confirmPassword = this.confirmPasswordInput.value;
-    // resetPassword({ token, password, confirmPassword }, (errors) => {
-    //   if (errors.length < 1) {
-    //     this.closeModal();
-    //   }
-    // });
+    if (e) e.preventDefault();
+    const {
+      addNewOfferAction,
+    } = this.props;
+
+    const name = this.offerNameInput.value;
+    const url = this.offerUrlInput.value;
+
+    let userId = null;
+    let userName = null;
+
+    if (this.offerUserInput) {
+      const selectedOption = this.offerUserInput.options[this.offerUserInput.selectedIndex];
+      userId = selectedOption.getAttribute('data-user-id');
+      userName = selectedOption.getAttribute('data-user-name');
+    }
+
+    addNewOfferAction({ name, url, userId, userName });
   }
 
   render() {
@@ -83,11 +101,7 @@ class AddNewModal extends Component {
                       className="form-control"
                       placeholder="Enter Offer Name"
                     />
-                    {this.getErrorForField('offer-name')}
-                    <small className="help-block">
-                      The offer name is a unique identifier used to select
-                      this offer when adding it to a rip.
-                    </small>
+                    {this.getErrorForField('name', 'The offer name is a unique identifier used to select this offer when adding it to a rip.')}
                   </div>
                   <div className="form-group">
                     <label htmlFor="confirm-password">Offer URL</label>
@@ -98,21 +112,17 @@ class AddNewModal extends Component {
                       className="form-control"
                       placeholder="Enter Offer URL"
                     />
-                    {this.getErrorForField('offer-url')}
-                    <small className="help-block">
-                      The offer URL is where we send the visitor
-                      from the ripped landing page.
-                    </small>
+                    {this.getErrorForField('url', 'The offer URL is where we send the visitor from the ripped landing page.')}
                   </div>
                   <UserSelectInput
-                    ref={(c) => { this.offerUserInput = c; }}
+                    inputRef={(c) => { this.offerUserInput = c; }}
                     users={this.props.users}
-                    getErrorForField={this.getErrorForField}
+                    getErrorForField={field => this.getErrorForField(field)}
                   />
                 </div>
                 <div className="modal-footer">
                   <button type="button" className="btn dark btn-outline" data-dismiss="modal">Cancel</button>
-                  <button type="button" className="btn green">Submit</button>
+                  <button type="submit" className="btn green">Submit</button>
                 </div>
               </div>
             </form>
@@ -126,15 +136,24 @@ class AddNewModal extends Component {
 AddNewModal.propTypes = {
   history: PropTypes.shape({}),
   users: PropTypes.arrayOf(PropTypes.object),
+  addNewOfferAction: PropTypes.func,
+  errors: PropTypes.arrayOf(PropTypes.object),
 };
 
 AddNewModal.defaultProps = {
+  addNewOfferAction: null,
   history: {},
   users: [],
+  errors: [],
 };
 
 const mapStateToProps = state => ({
   users: state.users.userList,
+  errors: state.offers.addNewErrors,
 });
 
-export default connect(mapStateToProps)(AddNewModal);
+const actions = {
+  addNewOfferAction: addNewOffer,
+};
+
+export default connect(mapStateToProps, actions)(AddNewModal);

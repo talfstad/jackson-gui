@@ -64,7 +64,7 @@ class ManageOffers extends Component {
                         <div className="caption">
                           <i className="icon-list" />
                           <span className="caption-subject bold uppercase">
-                            Offers List
+                            Offer List
                           </span>
                         </div>
                         <div className="actions">
