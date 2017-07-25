@@ -13,7 +13,7 @@ import {
 } from '/imports/actions/offers';
 
 import ManageOffersTable from './manage-offers-table';
-import AddNew from './add-new';
+import AddNew from './add-new-modal';
 
 class ManageOffers extends Component {
   componentWillUnmount() {
@@ -78,9 +78,13 @@ class ManageOffers extends Component {
                             />
                           </div>
                           <div className="columns columns-right btn-group pull-right">
-                            <button className="btn btn-primary in-portlet-large-btn" type="button" name="refresh" title="Refresh">
+                            <Link
+                              to={`${match.url}/new`}
+                              title="Add New Offer"
+                              className="btn btn-primary in-portlet-large-btn"
+                            >
                               <i className="glyphicon glyphicon-plus icon-plus" />
-                            </button>
+                            </Link>
                           </div>
                         </div>
                       </div>

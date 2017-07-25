@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Modal from '/imports/ui/components/modal';
 import UserSelectInput from './user-select-input';
 
-class AddOfferModal extends Component {
+class AddNewModal extends Component {
   componentDidMount() {
+    const { history } = this.props;
+
     $(this.el).modal('show');
     $(this.el).draggable({ handle: '.modal-header' });
+
+    $(this.el).on('hidden.bs.modal', () => {
+      history.push('/offers/manage');
+    });
   }
 
   componentDidUpdate() {
@@ -14,6 +21,12 @@ class AddOfferModal extends Component {
     // if (resetPasswordErrors.length < 1) {
     //   this.closeModal();
     // }
+  }
+
+  componentWillUnmount() {
+    // Intent: Remove backdrop to allow for a quick
+    // back button press.
+    $('.modal-backdrop').remove();
   }
 
   getErrorForField(field) {
@@ -26,7 +39,7 @@ class AddOfferModal extends Component {
   }
 
   closeModal() {
-    $(this.modal.el).modal('hide');
+    $(this.el).modal('hide');
   }
 
   handleAddNewOffer(e) {
@@ -93,6 +106,7 @@ class AddOfferModal extends Component {
                   </div>
                   <UserSelectInput
                     ref={(c) => { this.offerUserInput = c; }}
+                    users={this.props.users}
                     getErrorForField={this.getErrorForField}
                   />
                 </div>
@@ -109,8 +123,18 @@ class AddOfferModal extends Component {
   }
 }
 
-const mapStateToProps = state => ({
+AddNewModal.propTypes = {
+  history: PropTypes.shape({}),
+  users: PropTypes.arrayOf(PropTypes.object),
+};
 
+AddNewModal.defaultProps = {
+  history: {},
+  users: [],
+};
+
+const mapStateToProps = state => ({
+  users: state.users.userList,
 });
 
-export default connect(mapStateToProps)(AddOfferModal);
+export default connect(mapStateToProps)(AddNewModal);

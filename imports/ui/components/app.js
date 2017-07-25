@@ -12,6 +12,7 @@ import '/imports/ui/css/app.scss';
 import '/imports/ui/css/imports/font-awesome.css';
 
 import { loadUser, loadUserSub } from '/imports/actions/user/load';
+import { loadUsersSub } from '/imports/actions/users';
 
 import Header from './header';
 import Rips from './rips';
@@ -24,9 +25,11 @@ class App extends Component {
     const {
       loadUserAction,
       loadUserSubAction,
+      loadUsersSubAction,
     } = this.props;
     loadUserAction();
     loadUserSubAction();
+    loadUsersSubAction();
   }
 
   render() {
@@ -50,16 +53,19 @@ class App extends Component {
 App.propTypes = {
   loadUserAction: PropTypes.func,
   loadUserSubAction: PropTypes.func,
+  loadUsersSubAction: PropTypes.func,
 };
 
 App.defaultProps = {
   loadUserAction: null,
   loadUserSubAction: null,
+  loadUsersSubAction: null,
 };
 
 const actions = {
   loadUserSubAction: loadUserSub,
   loadUserAction: loadUser,
+  loadUsersSubAction: loadUsersSub,
 };
 
 const mapStateToProps = state => ({

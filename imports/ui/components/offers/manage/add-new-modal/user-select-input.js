@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import RenderIfAdmin from '/imports/ui/components/auth/hocs/render-if-admin';
 
-require('bootstrap-select');
-require('bootstrap-select/dist/css/bootstrap-select.css');
+import 'bootstrap-select';
+import 'bootstrap-select/dist/css/bootstrap-select.min.css';
 
 class UserSelectInput extends Component {
   componentDidMount() {
@@ -13,18 +13,34 @@ class UserSelectInput extends Component {
     });
   }
 
+  componentDidUpdate() {
+    $('.bs-select').selectpicker('refresh');
+  }
+
+  buildUserList() {
+    const { users } = this.props;
+    return users.map(user => (
+      <option
+        key={user._id}
+        value={user._id}
+      >
+        {user.name}
+      </option>
+    ));
+  }
+
   render() {
     return (
       <div className="form-group">
-        <label htmlFor="confirm-password">Offer User</label>
+        <label htmlFor="offer-user">Offer User</label>
         <select className="bs-select form-control" data-live-search="true" data-size="8">
-          <option value="AF">Afghanistan</option>
+          {this.buildUserList()}
         </select>
-        {this.props.getErrorForField('offer-user')}
         <small className="help-block">
           Select which user this offer will be available for.
           This option is only available to admin users.
         </small>
+        {this.props.getErrorForField('offer-user')}
       </div>
     );
   }
@@ -32,10 +48,12 @@ class UserSelectInput extends Component {
 
 UserSelectInput.propTypes = {
   getErrorForField: PropTypes.func,
+  users: PropTypes.arrayOf(PropTypes.object),
 };
 
 UserSelectInput.defaultProps = {
   getErrorForField: null,
+  users: [],
 };
 
 export default RenderIfAdmin(UserSelectInput);
