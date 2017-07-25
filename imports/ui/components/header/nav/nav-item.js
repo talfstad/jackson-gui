@@ -5,18 +5,6 @@ import {
 } from 'react-router-dom';
 
 class NavItem extends Component {
-  componentWillMount() {
-    // If we match url, load default sub nav item.
-    const {
-      defaultPath,
-      history,
-      path,
-    } = this.props;
-
-    // If we match our path redirect to our default path
-    if (this.matchesPath(path)) history.replace(defaultPath);
-  }
-
   getItem({ open }) {
     const {
       defaultPath,
@@ -75,7 +63,6 @@ NavItem.propTypes = {
   subNav: PropTypes.arrayOf(PropTypes.object),
   path: PropTypes.string,
   defaultPath: PropTypes.string,
-  history: PropTypes.shape({}),
   match: PropTypes.shape({}),
   name: PropTypes.string,
   icon: PropTypes.string,
@@ -83,7 +70,6 @@ NavItem.propTypes = {
 
 NavItem.defaultProps = {
   subNav: [],
-  history: {},
   path: null,
   defaultPath: null,
   icon: null,

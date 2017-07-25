@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
   Route,
+  Redirect,
 } from 'react-router-dom';
 import {
   withRouter,
@@ -9,7 +10,6 @@ import {
 } from 'react-router';
 import RequireAuth from '../auth/hocs/require-auth';
 import ManageOffers from './manage';
-import OverviewOffers from './overview';
 
 class Offers extends Component {
   render() {
@@ -17,8 +17,11 @@ class Offers extends Component {
 
     return (
       <Switch>
-        <Route path={`${match.url}/manage`} component={ManageOffers} />
-        <Route path={`${match.url}/overview`} component={OverviewOffers} />
+        <Route
+          path={`${match.url}/manage`}
+          component={ManageOffers}
+        />
+        <Route render={() => <Redirect to={`${match.url}/manage`} />} />
       </Switch>
     );
   }

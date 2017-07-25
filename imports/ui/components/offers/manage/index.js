@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import {
+  Route,
+  Link,
+} from 'react-router-dom';
 import _ from 'lodash';
 
 import {
@@ -10,6 +13,7 @@ import {
 } from '/imports/actions/offers';
 
 import ManageOffersTable from './manage-offers-table';
+import AddNew from './add-new';
 
 class ManageOffers extends Component {
   componentWillUnmount() {
@@ -36,16 +40,18 @@ class ManageOffers extends Component {
   }
 
   render() {
+    const { match } = this.props;
+
     return (
       <div className="container-fluid">
         <div className="page-content">
           <div className="breadcrumbs">
             <h1>Manage Offers</h1>
             <ol className="breadcrumb">
-              <li>
+              <li className="active">
                 <Link to="/offers/manage">Offers</Link>
               </li>
-              <li className="active">Manage</li>
+              <li>Manage</li>
             </ol>
           </div>
           <div className="page-content-container">
@@ -56,8 +62,8 @@ class ManageOffers extends Component {
                     <div className="portlet light bordered">
                       <div className="portlet-title">
                         <div className="caption">
-                          <i className="icon-list font-green" />
-                          <span className="caption-subject font-green bold uppercase">
+                          <i className="icon-list" />
+                          <span className="caption-subject bold uppercase">
                             Offers List
                           </span>
                         </div>
@@ -72,7 +78,7 @@ class ManageOffers extends Component {
                             />
                           </div>
                           <div className="columns columns-right btn-group pull-right">
-                            <button className="btn btn-default in-portlet-large-btn" type="button" name="refresh" title="Refresh">
+                            <button className="btn btn-primary in-portlet-large-btn" type="button" name="refresh" title="Refresh">
                               <i className="glyphicon glyphicon-plus icon-plus" />
                             </button>
                           </div>
@@ -94,6 +100,11 @@ class ManageOffers extends Component {
             </div>
           </div>
         </div>
+        <Route
+          exact
+          path={`${match.url}/new`}
+          component={AddNew}
+        />
       </div>
     );
   }
@@ -110,9 +121,11 @@ ManageOffers.propTypes = {
   pages: PropTypes.number,
   search: PropTypes.string,
   defaultPageSize: PropTypes.number,
+  match: PropTypes.shape({}),
 };
 
 ManageOffers.defaultProps = {
+  match: {},
   page: 0,
   pageSize: 10,
   sorted: [],

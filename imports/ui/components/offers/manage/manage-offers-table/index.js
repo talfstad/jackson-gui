@@ -31,6 +31,7 @@ class ManageOffersTable extends Component {
       {
         Header: 'Name',
         accessor: 'name',
+        width: 400,
       },
       {
         Header: 'Url',
@@ -40,6 +41,22 @@ class ManageOffersTable extends Component {
       {
         Header: 'User',
         accessor: 'userName',
+        width: 250,
+      },
+      {
+        Header: '',
+        accessor: 'actions',
+        width: 50,
+        Cell: (row) => {
+          // console.log(row);
+          return (
+            <div>
+              <a>
+                <i className="fa fa-edit" />
+              </a>
+            </div>
+          );
+        },
       },
     ];
 
@@ -53,6 +70,10 @@ class ManageOffersTable extends Component {
             defaultPageSize={this.props.defaultPageSize}
             onFetchData={(state, instance) => this.onFetchData(state, instance)}
             pages={this.props.pages}
+            defaultSorted={[{
+              id: 'name',
+              desc: false,
+            }]}
             data={this.props.list}
             loading={this.props.loading}
           />

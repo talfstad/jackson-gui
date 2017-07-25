@@ -42,7 +42,6 @@
   }
 }
 
-
 .dropdown-menu-v2 {
   padding: 10px 0;
 }
@@ -61,4 +60,12 @@
 
 .in-portlet-large-btn {
   padding: 7px 12px 6px !important;
+}
+
+.breadcrumbs .breadcrumb > li {
+  text-transform: uppercase;
+  color: #777;
+  a {
+    color: inherit;
+  }
 }

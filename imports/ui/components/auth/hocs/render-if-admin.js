@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  Route,
-} from 'react-router-dom';
 
 export default function (ComposedComponent) {
   const RenderIfAdmin = (props) => {
@@ -14,17 +11,11 @@ export default function (ComposedComponent) {
     // Intent: if admin, role will exist in user's role array.
     const isAdmin = user.roles.indexOf('admin');
 
-    return (
-      <Route
-        render={() => {
-          if (isAdmin < 0) {
-            return <noscript />;
-          }
+    if (isAdmin < 0) {
+      return <noscript />;
+    }
 
-          return <ComposedComponent {...props} />;
-        }}
-      />
-    );
+    return <ComposedComponent {...props} />;
   };
 
   RenderIfAdmin.propTypes = {
