@@ -7,7 +7,10 @@ const OfferSchema = new SimpleSchema({
   url: {
     type: String,
   },
-  user: {
+  userId: {
+    type: String,
+  },
+  userName: {
     type: String,
   },
 });
