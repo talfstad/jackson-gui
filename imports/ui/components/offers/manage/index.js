@@ -14,6 +14,7 @@ import {
 
 import ManageOffersTable from './manage-offers-table';
 import AddNew from './add-new-modal';
+import DeleteOffer from './delete-offer-modal';
 
 class ManageOffers extends Component {
   componentWillUnmount() {
@@ -108,6 +109,11 @@ class ManageOffers extends Component {
           exact
           path={`${match.url}/new`}
           component={AddNew}
+        />
+        <Route
+          exact
+          path={`${match.url}/delete`}
+          component={DeleteOffer}
         />
       </div>
     );

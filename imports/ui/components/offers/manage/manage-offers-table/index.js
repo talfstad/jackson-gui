@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
+import { Link } from 'react-router-dom';
 
 import 'react-table/react-table.css';
 
@@ -48,12 +49,24 @@ class ManageOffersTable extends Component {
         accessor: 'actions',
         width: 50,
         Cell: (row) => {
-          // console.log(row);
+          const {
+            original,
+          } = row;
+
           return (
             <div>
               <a>
                 <i className="fa fa-edit" />
               </a>
+              <Link
+                className="ml10"
+                to={{
+                  pathname: '/offers/manage/delete',
+                  state: original,
+                }}
+              >
+                <i className="fa fa-trash-o" />
+              </Link>
             </div>
           );
         },

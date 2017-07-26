@@ -21,6 +21,7 @@ export const UPDATE_OFFERS_SORTED = 'UPDATE_OFFERS_SORTED';
 export const UPDATE_OFFERS_PAGE_SIZE = 'UPDATE_OFFERS_PAGE_SIZE';
 
 export const ADD_NEW_OFFER_ERRORS = 'ADD_NEW_OFFER_ERRORS';
+export const DELETE_OFFER_ERRORS = 'DELETE_OFFER_ERRORS';
 
 export const fetchOffers = ({ page, pageSize, sorted, search }) => (dispatch) => {
   dispatch({
@@ -63,7 +64,7 @@ export const stopOffersSub = () => (dispatch) => {
   dispatch(stopSubscription(OFFERS_COUNT_SUB));
 };
 
-export const addNewOffer = ({ name, url, userId, userName }) => (dispatch) => {
+export const addNewOffer = ({ name, url, userId, userName }, callback) => (dispatch) => {
   const addNewOfferValidationSchema = AddNewOfferValidationSchema.namedContext();
   addNewOfferValidationSchema.validate({ name, url });
 
@@ -82,6 +83,7 @@ export const addNewOffer = ({ name, url, userId, userName }) => (dispatch) => {
           type: ADD_NEW_OFFER_ERRORS,
           payload: [],
         });
+        callback();
       }
     });
   } else {
@@ -94,5 +96,29 @@ export const addNewOffer = ({ name, url, userId, userName }) => (dispatch) => {
       payload: validationErrors,
     });
   }
-  // call addOffer meteor method. This
+};
+
+export const deleteOffer = ({ offerId }, callback) => (dispatch) => {
+  if (_.isUndefined(offerId)) {
+    callback();
+    return;
+  }
+
+  Meteor.call('deleteOffer', { offerId }, (error) => {
+    if (error) {
+      dispatch({
+        type: DELETE_OFFER_ERRORS,
+        payload: [{
+          name: 'name',
+          message: error.reason,
+        }],
+      });
+    } else {
+      dispatch({
+        type: DELETE_OFFER_ERRORS,
+        payload: [],
+      });
+      callback();
+    }
+  });
 };

@@ -69,7 +69,9 @@ class AddNewModal extends Component {
       userName = selectedOption.getAttribute('data-user-name');
     }
 
-    addNewOfferAction({ name, url, userId, userName });
+    addNewOfferAction({ name, url, userId, userName }, () => {
+      this.closeModal();
+    });
   }
 
   render() {

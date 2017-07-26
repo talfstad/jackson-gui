@@ -7,6 +7,7 @@ import {
   UPDATE_OFFERS_PAGE,
   UPDATE_OFFERS_SORTED,
   ADD_NEW_OFFER_ERRORS,
+  DELETE_OFFER_ERRORS,
 } from '../actions/offers';
 
 const initialState = {
@@ -17,6 +18,7 @@ const initialState = {
   sorted: [],
   pageSize: 10,
   addNewErrors: [],
+  deleteOfferErrors: [],
   defaultPageSize: 10,
   count: 0,
 };
@@ -72,6 +74,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         addNewErrors: action.payload,
+      };
+    }
+    case DELETE_OFFER_ERRORS: {
+      return {
+        ...state,
+        deleteOfferErrors: action.payload,
       };
     }
     default:
