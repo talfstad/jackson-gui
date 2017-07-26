@@ -1,6 +1,7 @@
 import 'simpl-schema';
 
 import offers from './offers';
+import rips from './rips';
 
 import Schemas from '../schemas';
 
@@ -8,7 +9,9 @@ import Schemas from '../schemas';
 // to schemas
 Meteor.users.attachSchema(Schemas.userSchema);
 offers.attachSchema(Schemas.offerSchema);
+rips.attachSchema(Schemas.ripSchema);
 
 export const Users = Meteor.users;
 
 export const Offers = offers;
+export const Rips = rips;
