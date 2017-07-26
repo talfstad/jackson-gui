@@ -65,7 +65,7 @@ class ManageOffers extends Component {
                         <div className="caption">
                           <i className="icon-list" />
                           <span className="caption-subject bold uppercase">
-                            Offer List
+                            Offer List ({this.props.offerListCount})
                           </span>
                         </div>
                         <div className="actions">
@@ -132,9 +132,11 @@ ManageOffers.propTypes = {
   search: PropTypes.string,
   defaultPageSize: PropTypes.number,
   match: PropTypes.shape({}),
+  offerListCount: PropTypes.number,
 };
 
 ManageOffers.defaultProps = {
+  offerListCount: 0,
   match: {},
   page: 0,
   pageSize: 10,
@@ -157,6 +159,7 @@ const mapStateToProps = state => ({
   list: state.offers.offerList,
   loading: !state.offers.ready,
   pages: state.offers.pages,
+  offerListCount: state.offers.count,
   defaultPageSize: state.offers.defaultPageSize,
   page: state.offers.page,
   pageSize: state.offers.pageSize,
