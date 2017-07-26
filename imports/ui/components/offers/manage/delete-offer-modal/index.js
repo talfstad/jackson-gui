@@ -6,12 +6,11 @@ import { connect } from 'react-redux';
 import { deleteOffer } from '/imports/actions/offers';
 
 class DeleteOfferModal extends Component {
-  constructor(props) {
-    super(props);
+  componentWillMount() {
     const {
       history,
       location: { state = {} },
-    } = props;
+    } = this.props;
     // Require offer id to be present
     if (
       _.isUndefined(state._id) ||
@@ -56,7 +55,7 @@ class DeleteOfferModal extends Component {
     if (e) e.preventDefault();
     const {
       deleteOfferAction,
-      location: { state },
+      location: { state = {} },
     } = this.props;
 
     deleteOfferAction({ offerId: state._id }, () => {
@@ -70,7 +69,7 @@ class DeleteOfferModal extends Component {
 
   render() {
     const {
-      location: { state },
+      location: { state = {} },
     } = this.props;
 
     return (
