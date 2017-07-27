@@ -4,6 +4,7 @@ import { handleError } from '/imports/api/meteor/methods-common/method-helpers';
 import {
   Offers,
   Users,
+  Rips,
 } from '/imports/api/meteor/collections';
 
 Meteor.methods({
@@ -33,6 +34,20 @@ Meteor.methods({
               userId,
             },
           });
+
+        Rips.update({
+          'offer.offer_id': _id,
+        }, {
+          $set: {
+            offer: {
+              offer_id: _id,
+              url,
+              name,
+            },
+          },
+        }, {
+          multi: true,
+        });
       } else {
         const user = Users.findOne({
           _id: this.userId,
@@ -54,6 +69,19 @@ Meteor.methods({
               userId: user._id,
             },
           });
+        Rips.update({
+          'offer.offer_id': _id,
+        }, {
+          $set: {
+            offer: {
+              offer_id: _id,
+              url,
+              name,
+            },
+          },
+        }, {
+          multi: true,
+        });
       }
     } else {
       handleError('Invalid Request');

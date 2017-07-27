@@ -9,7 +9,7 @@ import Schemas from '../schemas';
 // to schemas
 Meteor.users.attachSchema(Schemas.userSchema);
 offers.attachSchema(Schemas.offerSchema);
-rips.attachSchema(Schemas.ripSchema);
+// rips.attachSchema(Schemas.ripSchema);
 
 export const Users = Meteor.users;
 

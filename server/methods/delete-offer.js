@@ -14,7 +14,7 @@ Meteor.methods({
       });
       Rips.update(
         {
-          'offer._id': offerId,
+          'offer.offer_id': offerId,
         },
         {
           $unset: { offer: '' },
