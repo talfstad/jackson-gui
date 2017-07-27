@@ -7,22 +7,22 @@ import {
 import _ from 'lodash';
 
 import {
-  fetchOffers,
-  stopOffersSub,
-} from '/imports/actions/offers';
+  fetchWhitelistedDomains,
+  stopWhitelistedDomainsSub,
+} from '/imports/actions/whitelisted';
 
-import ManageWhitelistTable from './manage-whitelist-table';
+import ManageWhitelistTable from './manage-whitelisted-table';
 
 class ManageWhitelist extends Component {
   componentWillUnmount() {
     const {
-      stopOffersSubAction,
+      stopWhitelistedDomainsSubAction,
     } = this.props;
-    stopOffersSubAction();
+    stopWhitelistedDomainsSubAction();
   }
 
   handleSearch() {
-    const { fetchOffersAction } = this.props;
+    const { fetchWhitelistedDomainsAction } = this.props;
 
     const {
       page,
@@ -30,7 +30,7 @@ class ManageWhitelist extends Component {
       sorted,
     } = this.props;
 
-    fetchOffersAction({
+    fetchWhitelistedDomainsAction({
       page,
       pageSize,
       sorted,
@@ -47,7 +47,7 @@ class ManageWhitelist extends Component {
             <h1>Manage Domain Whitelist</h1>
             <ol className="breadcrumb">
               <li className="active">
-                <Link to="/whitelist/manage">Whitelist</Link>
+                <Link to="/whitelisted/manage">Whitelist</Link>
               </li>
               <li>Manage</li>
             </ol>
@@ -62,7 +62,7 @@ class ManageWhitelist extends Component {
                         <div className="caption">
                           <i className="icon-list" />
                           <span className="caption-subject bold uppercase">
-                            Domain Whitelist ({this.props.offerListCount})
+                            Domain Whitelist ({this.props.whitelistCount})
                           </span>
                         </div>
                         <div className="actions">
@@ -78,7 +78,7 @@ class ManageWhitelist extends Component {
                           <div className="columns columns-right btn-group pull-right">
                             <Link
                               to={`${match.url}/new`}
-                              title="Add New Offer"
+                              title="Whitelist New Domain"
                               className="btn btn-primary in-portlet-large-btn"
                             >
                               <i className="glyphicon glyphicon-plus icon-plus" />
@@ -87,8 +87,8 @@ class ManageWhitelist extends Component {
                         </div>
                       </div>
                       <ManageWhitelistTable
-                        fetchOffersAction={this.props.fetchOffersAction}
-                        stopOffersSubAction={this.props.stopOffersSubAction}
+                        fetchWhitelistedDomainsAction={this.props.fetchWhitelistedDomainsAction}
+                        stopWhitelistedDomainsSubAction={this.props.stopWhitelistedDomainsSubAction}
                         list={this.props.list}
                         loading={this.props.loading}
                         pages={this.props.pages}
@@ -111,25 +111,25 @@ ManageWhitelist.propTypes = {
   page: PropTypes.number,
   pageSize: PropTypes.number,
   sorted: PropTypes.arrayOf(PropTypes.object),
-  fetchOffersAction: PropTypes.func,
-  stopOffersSubAction: PropTypes.func,
+  fetchWhitelistedDomainsAction: PropTypes.func,
+  stopWhitelistedDomainsSubAction: PropTypes.func,
   list: PropTypes.arrayOf(PropTypes.object),
   loading: PropTypes.bool,
   pages: PropTypes.number,
   search: PropTypes.string,
   defaultPageSize: PropTypes.number,
   match: PropTypes.shape({}),
-  offerListCount: PropTypes.number,
+  whitelistCount: PropTypes.number,
 };
 
 ManageWhitelist.defaultProps = {
-  offerListCount: 0,
+  whitelistCount: 0,
   match: {},
   page: 0,
   pageSize: 10,
   sorted: [],
-  stopOffersSubAction: null,
-  fetchOffersAction: null,
+  stopWhitelistedDomainsSubAction: null,
+  fetchWhitelistedDomainsAction: null,
   list: [],
   search: '',
   loading: true,
@@ -138,20 +138,20 @@ ManageWhitelist.defaultProps = {
 };
 
 const actions = {
-  fetchOffersAction: fetchOffers,
-  stopOffersSubAction: stopOffersSub,
+  fetchWhitelistedDomainsAction: fetchWhitelistedDomains,
+  stopWhitelistedDomainsSubAction: stopWhitelistedDomainsSub,
 };
 
 const mapStateToProps = state => ({
-  list: state.offers.offerList,
-  loading: !state.offers.ready,
-  pages: state.offers.pages,
-  offerListCount: state.offers.count,
-  defaultPageSize: state.offers.defaultPageSize,
-  page: state.offers.page,
-  pageSize: state.offers.pageSize,
-  sorted: state.offers.sorted,
-  search: state.offers.search,
+  list: state.whitelisted.whitelist,
+  loading: !state.whitelisted.ready,
+  pages: state.whitelisted.pages,
+  whitelistCount: state.whitelisted.count,
+  defaultPageSize: state.whitelisted.defaultPageSize,
+  page: state.whitelisted.page,
+  pageSize: state.whitelisted.pageSize,
+  sorted: state.whitelisted.sorted,
+  search: state.whitelisted.search,
 });
 
 export default connect(mapStateToProps, actions)(ManageWhitelist);

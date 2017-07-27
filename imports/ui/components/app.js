@@ -17,7 +17,7 @@ import { loadUsersSub } from '/imports/actions/users';
 import Header from './header';
 import Rips from './rips';
 import Offers from './offers';
-import Whitelist from './whitelist';
+import Whitelisted from './whitelisted';
 import Login from './auth/components/login';
 
 class App extends Component {
@@ -40,7 +40,7 @@ class App extends Component {
           <Switch>
             <Route path="/rips" component={Rips} />
             <Route path="/offers" component={Offers} />
-            <Route path="/whitelist" component={Whitelist} />
+            <Route path="/whitelisted" component={Whitelisted} />
             <Route path="/login" component={Login} />
             <Route render={() => <Redirect to="/rips/manage" />} />
           </Switch>

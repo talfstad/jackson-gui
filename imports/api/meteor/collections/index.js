@@ -2,6 +2,7 @@ import 'simpl-schema';
 
 import offers from './offers';
 import rips from './rips';
+import whitelisted from './whitelisted';
 
 import Schemas from '../schemas';
 
@@ -15,3 +16,4 @@ export const Users = Meteor.users;
 
 export const Offers = offers;
 export const Rips = rips;
+export const Whitelisted = whitelisted;

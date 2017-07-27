@@ -48,14 +48,14 @@ class Nav extends Component {
         key="3"
         match={match}
         history={history}
-        name="Whitelist"
-        path="/whitelist"
-        defaultPath="/whitelist/manage"
+        name="Whitelisted"
+        path="/whitelisted"
+        defaultPath="/whitelisted/manage"
         icon="icon-shield"
         subNav={[
           {
             name: 'Manage',
-            path: '/whitelist/manage',
+            path: '/whitelisted/manage',
             icon: 'icon-settings',
           },
         ]}

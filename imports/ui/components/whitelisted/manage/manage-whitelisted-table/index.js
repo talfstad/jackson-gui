@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 
 import 'react-table/react-table.css';
 
-class ManageOffersTable extends Component {
+class ManageWhitelistedTable extends Component {
   onFetchData(state) {
-    const { fetchOffersAction } = this.props;
+    const { fetchWhitelistedDomainsAction } = this.props;
 
     const {
       page,
@@ -19,7 +19,7 @@ class ManageOffersTable extends Component {
       search,
     } = this.props;
 
-    fetchOffersAction({
+    fetchWhitelistedDomainsAction({
       page,
       pageSize,
       sorted,
@@ -32,22 +32,17 @@ class ManageOffersTable extends Component {
       {
         Header: 'Name',
         accessor: 'name',
-        width: 400,
-      },
-      {
-        Header: 'Url',
-        id: 'url',
-        accessor: 'url',
+        minWidth: 400,
       },
       {
         Header: 'User',
         accessor: 'userName',
-        width: 250,
+        minWidth: 250,
       },
       {
         Header: '',
         accessor: 'actions',
-        width: 50,
+        maxWidth: 50,
         Cell: (row) => {
           const {
             original,
@@ -55,13 +50,10 @@ class ManageOffersTable extends Component {
 
           return (
             <div>
-              <Link to={`/offers/manage/edit/${original._id}`}>
-                <i className="fa fa-edit" />
-              </Link>
               <Link
                 className="ml10"
                 to={{
-                  pathname: '/offers/manage/delete',
+                  pathname: '/whitelisted/manage/delete',
                   state: original,
                 }}
               >
@@ -96,8 +88,8 @@ class ManageOffersTable extends Component {
   }
 }
 
-ManageOffersTable.propTypes = {
-  fetchOffersAction: PropTypes.func,
+ManageWhitelistedTable.propTypes = {
+  fetchWhitelistedDomainsAction: PropTypes.func,
   list: PropTypes.arrayOf(PropTypes.object),
   loading: PropTypes.bool,
   search: PropTypes.string,
@@ -105,8 +97,8 @@ ManageOffersTable.propTypes = {
   defaultPageSize: PropTypes.number,
 };
 
-ManageOffersTable.defaultProps = {
-  fetchOffersAction: null,
+ManageWhitelistedTable.defaultProps = {
+  fetchWhitelistedDomainsAction: null,
   list: [],
   search: '',
   loading: true,
@@ -114,4 +106,4 @@ ManageOffersTable.defaultProps = {
   defaultPageSize: 10,
 };
 
-export default ManageOffersTable;
+export default ManageWhitelistedTable;
