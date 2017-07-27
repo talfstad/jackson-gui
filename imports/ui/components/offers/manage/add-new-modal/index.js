@@ -2,11 +2,34 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { addNewOffer } from '/imports/actions/offers';
+import {
+  addNewOffer,
+  updateAddValues,
+} from '/imports/actions/offers';
 
 import Base from './base';
 
 class AddNewModal extends Component {
+  getDefaultValues() {
+    const { offerValues } = this.props;
+    const { userId = '' } = offerValues;
+
+    return ([
+      {
+        name: 'name',
+        value: offerValues.name,
+      },
+      {
+        name: 'url',
+        value: offerValues.url,
+      },
+      {
+        name: 'offer-user',
+        value: userId,
+      },
+    ]);
+  }
+
   handleAddNewOffer(e) {
     if (e) e.preventDefault();
     const {
@@ -36,6 +59,24 @@ class AddNewModal extends Component {
     });
   }
 
+  handleOnChange() {
+    const {
+      offerNameInput,
+      offerUrlInput,
+      offerUserInput,
+    } = this.baseEl;
+
+    const {
+      updateAddValuesAction,
+    } = this.props;
+
+    updateAddValuesAction({
+      name: offerNameInput.value,
+      url: offerUrlInput.value,
+      userId: offerUserInput.value,
+    });
+  }
+
   render() {
     const {
       history,
@@ -49,16 +90,8 @@ class AddNewModal extends Component {
         offerUrlInputRef={(c) => { this.offerUrlInput = c; }}
         offerUserInputRef={(c) => { this.offerUserInput = c; }}
         history={history}
-        defaultValues={[
-          {
-            name: 'name',
-            value: '',
-          },
-          {
-            name: 'url',
-            value: '',
-          },
-        ]}
+        defaultValues={this.getDefaultValues()}
+        handleOnChange={e => this.handleOnChange(e)}
         users={users}
         handleModalAction={e => this.handleAddNewOffer(e)}
         modalTitle="Add New Offer"
@@ -74,11 +107,15 @@ AddNewModal.propTypes = {
   users: PropTypes.arrayOf(PropTypes.object),
   errors: PropTypes.arrayOf(PropTypes.object),
   addNewOfferAction: PropTypes.func,
+  updateAddValuesAction: PropTypes.func,
+  offerValues: PropTypes.shape({}),
 };
 
 AddNewModal.defaultProps = {
+  updateAddValuesAction: null,
   addNewOfferAction: null,
   history: {},
+  offerValues: {},
   users: [],
   errors: [],
 };
@@ -86,10 +123,12 @@ AddNewModal.defaultProps = {
 const mapStateToProps = state => ({
   users: state.users.userList,
   errors: state.offers.addNewErrors,
+  offerValues: state.offers.addOffer,
 });
 
 const actions = {
   addNewOfferAction: addNewOffer,
+  updateAddValuesAction: updateAddValues,
 };
 
 export default connect(mapStateToProps, actions)(AddNewModal);

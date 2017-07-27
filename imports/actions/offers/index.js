@@ -9,11 +9,11 @@ import AddNewOfferValidationSchema from '/imports/api/meteor/schemas/validation/
 import { Offers } from '/imports/api/meteor/collections';
 
 export const OFFERS_COUNT_SUB = 'OFFERS_COUNT';
-export const OFFERS_COUNT_SUB_CHANGED = `${OFFERS_COUNT_SUB}_SUBSCRIPTION_CHANGED`;
+export const OFFERS_COUNT_SUBSCRIPTION_CHANGED = `${OFFERS_COUNT_SUB}_SUBSCRIPTION_CHANGED`;
 
 export const OFFERS_SUB = 'OFFERS';
-export const OFFERS_SUB_SUBSCRIPTION_READY = `${OFFERS_SUB}_SUBSCRIPTION_READY`;
-export const OFFERS_SUB_SUBSCRIPTION_CHANGED = `${OFFERS_SUB}_SUBSCRIPTION_CHANGED`;
+export const OFFERS_SUBSCRIPTION_READY = `${OFFERS_SUB}_SUBSCRIPTION_READY`;
+export const OFFERS_SUBSCRIPTION_CHANGED = `${OFFERS_SUB}_SUBSCRIPTION_CHANGED`;
 
 export const UPDATE_OFFERS_SEARCH = 'UPDATE_OFFERS_SEARCH';
 export const UPDATE_OFFERS_PAGE = 'UPDATE_OFFERS_PAGE';
@@ -22,6 +22,23 @@ export const UPDATE_OFFERS_PAGE_SIZE = 'UPDATE_OFFERS_PAGE_SIZE';
 
 export const ADD_NEW_OFFER_ERRORS = 'ADD_NEW_OFFER_ERRORS';
 export const DELETE_OFFER_ERRORS = 'DELETE_OFFER_ERRORS';
+export const UPDATE_EDIT_OFFER_VALUES = 'UPDATE_EDIT_OFFER_VALUES';
+export const UPDATE_ADD_OFFER_VALUES = 'UPDATE_ADD_OFFER_VALUES';
+
+export const OFFER_EDIT_SUB = 'OFFER_EDIT_SUB';
+export const OFFER_EDIT_SUBSCRIPTION_READY = `${OFFER_EDIT_SUB}_SUBSCRIPTION_READY`;
+export const OFFER_EDIT_SUBSCRIPTION_CHANGED = `${OFFER_EDIT_SUB}_SUBSCRIPTION_CHANGED`;
+
+export const subscribeToEditOffer = ({ offerId }) => (
+  startSubscription({
+    key: OFFER_EDIT_SUB,
+    get: () =>
+      Offers.find({
+        _id: (new Mongo.ObjectID(offerId)),
+      }).fetch(),
+    subscribe: () => Meteor.subscribe(OFFER_EDIT_SUB, { offerId }),
+  })
+);
 
 export const fetchOffers = ({ page, pageSize, sorted, search }) => (dispatch) => {
   dispatch({
@@ -97,6 +114,16 @@ export const addNewOffer = ({ name, url, userId, userName }, callback) => (dispa
     });
   }
 };
+
+export const updateEditValues = values => ({
+  type: UPDATE_EDIT_OFFER_VALUES,
+  payload: values,
+});
+
+export const updateAddValues = values => ({
+  type: UPDATE_ADD_OFFER_VALUES,
+  payload: values,
+});
 
 export const deleteOffer = ({ offerId }, callback) => (dispatch) => {
   if (_.isUndefined(offerId)) {

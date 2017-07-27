@@ -55,9 +55,9 @@ class ManageOffersTable extends Component {
 
           return (
             <div>
-              <a>
+              <Link to={`/offers/manage/edit/${original._id}`}>
                 <i className="fa fa-edit" />
-              </a>
+              </Link>
               <Link
                 className="ml10"
                 to={{

@@ -1,9 +1,12 @@
+import _ from 'lodash';
 import { Roles } from 'meteor/alanning:roles';
+import { check } from 'meteor/check';
 import { Counter } from 'meteor/natestrauser:publish-performant-counts';
 import { Offers } from '/imports/api/meteor/collections';
 import {
   OFFERS_SUB,
   OFFERS_COUNT_SUB,
+  OFFER_EDIT_SUB,
 } from '/imports/actions/offers';
 
 Meteor.publish(OFFERS_SUB, function ({ page, pageSize, sorted, search }) {
@@ -45,8 +48,6 @@ Meteor.publish(OFFERS_SUB, function ({ page, pageSize, sorted, search }) {
   });
 });
 
-// TODO: pass in the search term. whenever we change the query, we need to
-// re-sub to the count just as we resub to our data query.
 Meteor.publish(OFFERS_COUNT_SUB, function ({ search }) {
   if (Roles.userIsInRole(this.userId, 'admin')) {
     return new Counter('offersCount', Offers.find({
@@ -68,3 +69,40 @@ Meteor.publish(OFFERS_COUNT_SUB, function ({ search }) {
     ],
   }), 500);
 });
+
+Meteor.publish(OFFER_EDIT_SUB, function ({ offerId }) {
+  const isValidId = (id) => {
+    check(id, String);
+    return /[0-9a-fA-F]{24}/.test(id);
+  };
+
+  // General validation
+  if (
+    isValidId(offerId)
+  ) {
+    const objectId = new Mongo.ObjectID(offerId);
+
+    const offer = Offers.findOne({
+      _id: objectId,
+    });
+
+    if (_.isUndefined(offer._id)) {
+      return null;
+    }
+
+    // Admin can get any offer, else needs to be
+    // owned by this user.
+    if (
+      Roles.userIsInRole(this.userId, 'admin') ||
+      offer.userId === this.userId
+    ) {
+      return Offers.find({
+        _id: objectId,
+      });
+    }
+    return null;
+  }
+  return null;
+});
+
+export default {};

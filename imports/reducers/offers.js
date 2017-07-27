@@ -1,19 +1,24 @@
 import {
-  OFFERS_SUB_SUBSCRIPTION_CHANGED,
-  OFFERS_SUB_SUBSCRIPTION_READY,
-  OFFERS_COUNT_SUB_CHANGED,
+  OFFERS_SUBSCRIPTION_CHANGED,
+  OFFERS_SUBSCRIPTION_READY,
+  OFFERS_COUNT_SUBSCRIPTION_CHANGED,
+  OFFER_EDIT_SUBSCRIPTION_CHANGED,
   UPDATE_OFFERS_PAGE_SIZE,
   UPDATE_OFFERS_SEARCH,
   UPDATE_OFFERS_PAGE,
   UPDATE_OFFERS_SORTED,
   ADD_NEW_OFFER_ERRORS,
   DELETE_OFFER_ERRORS,
+  UPDATE_EDIT_OFFER_VALUES,
+  UPDATE_ADD_OFFER_VALUES,
 } from '../actions/offers';
 
 const initialState = {
   offerList: [],
   pages: -1,
   page: 0,
+  editOffer: {},
+  addOffer: {},
   search: '',
   sorted: [],
   pageSize: 10,
@@ -50,21 +55,21 @@ export default (state = initialState, action) => {
         pages: Math.ceil(state.count / action.payload),
       };
     }
-    case OFFERS_COUNT_SUB_CHANGED: {
+    case OFFERS_COUNT_SUBSCRIPTION_CHANGED: {
       return {
         ...state,
         pages: Math.ceil(action.payload / state.pageSize),
         count: action.payload,
       };
     }
-    case OFFERS_SUB_SUBSCRIPTION_READY: {
+    case OFFERS_SUBSCRIPTION_READY: {
       const { ready } = action.payload;
       return {
         ...state,
         ready,
       };
     }
-    case OFFERS_SUB_SUBSCRIPTION_CHANGED: {
+    case OFFERS_SUBSCRIPTION_CHANGED: {
       return {
         ...state,
         offerList: action.payload,
@@ -80,6 +85,25 @@ export default (state = initialState, action) => {
       return {
         ...state,
         deleteOfferErrors: action.payload,
+      };
+    }
+    case OFFER_EDIT_SUBSCRIPTION_CHANGED: {
+      const [editOffer] = action.payload;
+      return {
+        ...state,
+        editOffer,
+      };
+    }
+    case UPDATE_ADD_OFFER_VALUES: {
+      return {
+        ...state,
+        addOffer: action.payload,
+      };
+    }
+    case UPDATE_EDIT_OFFER_VALUES: {
+      return {
+        ...state,
+        editOffer: action.payload,
       };
     }
     default:

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import UserSelectInput from '../user-select-input';
+import UserSelectInput from './user-select-input';
 
 class Base extends Component {
   componentDidMount() {
@@ -67,7 +67,9 @@ class Base extends Component {
       handleModalAction,
       modalTitle,
       users,
+      handleOnChange,
     } = this.props;
+
     return (
       <div
         ref={(c) => { this.el = c; }}
@@ -88,7 +90,8 @@ class Base extends Component {
                   <input
                     ref={(c) => { this.offerNameInput = c; }}
                     id="offer-name"
-                    defaultValue={this.getDefaultValueForField('name')}
+                    value={this.getDefaultValueForField('name')}
+                    onChange={handleOnChange}
                     type="input"
                     className="form-control"
                     placeholder="Enter Offer Name"
@@ -100,7 +103,8 @@ class Base extends Component {
                   <input
                     ref={(c) => { this.offerUrlInput = c; }}
                     id="offer-url"
-                    defaultValue={this.getDefaultValueForField('url')}
+                    onChange={handleOnChange}
+                    value={this.getDefaultValueForField('url')}
                     type="input"
                     className="form-control"
                     placeholder="Enter Offer URL"
@@ -110,9 +114,9 @@ class Base extends Component {
                 <UserSelectInput
                   inputRef={(c) => { this.offerUserInput = c; }}
                   users={users}
-                  getDefaultValueForField={field => this.getDefaultValueForField(field)}
-                  getErrorForField={(field, defaultHelp) =>
-                    this.getErrorForField(field, defaultHelp)}
+                  selectedValue={this.getDefaultValueForField('offer-user')}
+                  errorForField={this.getErrorForField('offer-user', 'Select which user this offer will be available for. This option is only available to admin users.')}
+                  handleOnChange={handleOnChange}
                 />
               </div>
               <div className="modal-footer">
@@ -131,6 +135,7 @@ Base.propTypes = {
   history: PropTypes.shape({}),
   users: PropTypes.arrayOf(PropTypes.object),
   modalTitle: PropTypes.string,
+  handleOnChange: PropTypes.func,
   handleModalAction: PropTypes.func,
   modalRedirectRouteOnClose: PropTypes.string,
   errors: PropTypes.arrayOf(PropTypes.object),
@@ -140,6 +145,7 @@ Base.propTypes = {
 Base.defaultProps = {
   defaultValues: [],
   modalTitle: '',
+  handleOnChange: null,
   handleModalAction: null,
   modalRedirectRouteOnClose: '/',
   history: {},

@@ -32,30 +32,43 @@ class UserSelectInput extends Component {
   }
 
   render() {
+    const {
+      handleOnChange,
+      selectedValue,
+      errorForField,
+    } = this.props;
+
     return (
       <div className="form-group">
         <label htmlFor="offer-user">Offer User</label>
         <select
           ref={this.props.inputRef}
+          onChange={handleOnChange}
+          value={selectedValue}
           className="bs-select form-control"
           data-live-search="true"
           data-size="8"
         >
           {this.buildUserList()}
         </select>
-        {this.props.getErrorForField('offer-user', 'Select which user this offer will be available for. This option is only available to admin users.')}
+        {errorForField}
       </div>
     );
   }
 }
 
 UserSelectInput.propTypes = {
-  getErrorForField: PropTypes.func,
+  handleOnChange: PropTypes.func,
+  errorForField: PropTypes.shape({}),
+  selectedValue: PropTypes.string,
   users: PropTypes.arrayOf(PropTypes.object),
   inputRef: PropTypes.func,
 };
 
 UserSelectInput.defaultProps = {
+  handleOnChange: null,
+  selectedValue: null,
+  errorForField: {},
   getErrorForField: null,
   users: [],
   inputRef: null,
