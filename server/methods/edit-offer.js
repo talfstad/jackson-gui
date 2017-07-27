@@ -7,33 +7,53 @@ import {
 } from '/imports/api/meteor/collections';
 
 Meteor.methods({
-  editOffer({ offerId }) {
+  editOffer({ _id, name, url, userId, userName }) {
     // General validation
     if (
-      !_.isUndefined(offerId)
+      !_.isUndefined(_id) &&
+      !_.isUndefined(name) &&
+      !_.isUndefined(url)
     ) {
-      const offer = Offers.findOne({
-        _id: offerId,
-      });
-
-      if (!offer) {
-        handleError('Offer not found');
-      }
-
-      // Admin can get any offer
+      // Admin can add custom user
       if (
-        Roles.userIsInRole(this.userId, 'admin') ||
-        offer.userId === this.userId
+        Roles.userIsInRole(this.userId, 'admin') &&
+        !_.isUndefined(userName) &&
+        !_.isUndefined(_id) &&
+        !_.isUndefined(userId)
       ) {
-        // return the offer
-        Offers.insert({
-          name,
-          url,
-          userName,
-          userId,
-        });
+        // use custom user name if in here
+        Offers.update({
+          _id,
+        },
+          {
+            $set: {
+              name,
+              url,
+              userName,
+              userId,
+            },
+          });
       } else {
-        handleError('Not Authenticated');
+        const user = Users.findOne({
+          _id: this.userId,
+        });
+
+        if (!user) {
+          handleError('User not found');
+        }
+
+        // If here, we will use the requesting user as offer owner.
+        Offers.update({
+          _id,
+        },
+          {
+            $set: {
+              name,
+              url,
+              userName: user.name,
+              userId: user._id,
+            },
+          });
       }
     } else {
       handleError('Invalid Request');

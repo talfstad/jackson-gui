@@ -7,6 +7,7 @@ import {
   editOffer,
   subscribeToEditOffer,
   updateEditValues,
+  stopEditOfferSub,
 } from '/imports/actions/offers';
 
 import Base from '../add-new-modal/base';
@@ -26,6 +27,16 @@ class EditOfferModal extends Component {
     }
 
     subscribeToEditOfferAction({ offerId });
+  }
+
+  componentWillUnmount() {
+    const {
+      stopEditOfferSubAction,
+    } = this.props;
+    // Intent: must stop subscription to Remove
+    // the edit offer from the mini mongo db.
+    // Otherwise it will be in the paging for offer list.
+    stopEditOfferSubAction();
   }
 
   getDefaultValues() {
@@ -57,12 +68,20 @@ class EditOfferModal extends Component {
 
     const {
       updateEditValuesAction,
+      offerValues,
     } = this.props;
 
+    let userName = offerValues.userName;
+    if (offerUserInput) {
+      const selectedOption = offerUserInput.options[offerUserInput.selectedIndex];
+      userName = selectedOption.getAttribute('data-user-name');
+    }
+
     updateEditValuesAction({
+      userName,
       name: offerNameInput.value,
       url: offerUrlInput.value,
-      userId: offerUserInput.value,
+      userId: (offerUserInput || {}).value,
     });
   }
 
@@ -70,26 +89,10 @@ class EditOfferModal extends Component {
     if (e) e.preventDefault();
     const {
       editOfferAction,
+      offerValues,
     } = this.props;
-    const {
-      offerNameInput,
-      offerUrlInput,
-      offerUserInput,
-    } = this.baseEl;
 
-    const name = offerNameInput.value;
-    const url = offerUrlInput.value;
-
-    let userId = null;
-    let userName = null;
-
-    if (offerUserInput) {
-      const selectedOption = offerUserInput.options[offerUserInput.selectedIndex];
-      userId = selectedOption.getAttribute('data-user-id');
-      userName = selectedOption.getAttribute('data-user-name');
-    }
-
-    editOfferAction({ name, url, userId, userName }, () => {
+    editOfferAction(offerValues, () => {
       // Note: must include this here to get desired context.
       this.baseEl.closeModal();
     });
@@ -125,6 +128,7 @@ EditOfferModal.propTypes = {
   history: PropTypes.shape({}),
   users: PropTypes.arrayOf(PropTypes.object),
   errors: PropTypes.arrayOf(PropTypes.object),
+  stopEditOfferSubAction: PropTypes.func,
   editOfferAction: PropTypes.func,
   offerValues: PropTypes.shape({}),
   subscribeToEditOfferAction: PropTypes.func,
@@ -134,6 +138,7 @@ EditOfferModal.propTypes = {
 
 EditOfferModal.defaultProps = {
   subscribeToEditOfferAction: null,
+  stopEditOfferSubAction: null,
   editOfferAction: null,
   offerValues: {},
   history: {},
@@ -151,6 +156,7 @@ const mapStateToProps = state => ({
 
 const actions = {
   editOfferAction: editOffer,
+  stopEditOfferSubAction: stopEditOfferSub,
   updateEditValuesAction: updateEditValues,
   subscribeToEditOfferAction: subscribeToEditOffer,
 };

@@ -97,13 +97,19 @@ export default (state = initialState, action) => {
     case UPDATE_ADD_OFFER_VALUES: {
       return {
         ...state,
-        addOffer: action.payload,
+        addOffer: {
+          ...state.addOffer,
+          ...action.payload,
+        },
       };
     }
     case UPDATE_EDIT_OFFER_VALUES: {
       return {
         ...state,
-        editOffer: action.payload,
+        editOffer: {
+          ...state.editOffer,
+          ...action.payload,
+        },
       };
     }
     default:

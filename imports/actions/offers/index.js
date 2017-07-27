@@ -4,7 +4,7 @@ import {
   stopSubscription,
 } from 'meteor-redux-middlewares';
 
-import AddNewOfferValidationSchema from '/imports/api/meteor/schemas/validation/add-new-offer';
+import OfferValidationSchema from '/imports/api/meteor/schemas/validation/add-new-offer';
 
 import { Offers } from '/imports/api/meteor/collections';
 
@@ -71,7 +71,9 @@ export const fetchOffers = ({ page, pageSize, sorted, search }) => (dispatch) =>
   dispatch(stopSubscription(OFFERS_SUB));
   dispatch(startSubscription({
     key: OFFERS_SUB,
-    get: () => Offers.find().fetch(),
+    get: () => Offers.find({}, {
+      limit: pageSize,
+    }).fetch(),
     subscribe: () => Meteor.subscribe(OFFERS_SUB, { page, pageSize, sorted, search }),
   }));
 };
@@ -81,8 +83,49 @@ export const stopOffersSub = () => (dispatch) => {
   dispatch(stopSubscription(OFFERS_COUNT_SUB));
 };
 
+export const stopEditOfferSub = () => stopSubscription(OFFER_EDIT_SUB);
+
+export const editOffer = (offerValues, callback) => (dispatch) => {
+  const {
+    name,
+    url,
+  } = offerValues;
+
+  const editOfferValidationSchema = OfferValidationSchema.namedContext();
+  editOfferValidationSchema.validate({ name, url });
+
+  if (editOfferValidationSchema.isValid()) {
+    Meteor.call('editOffer', offerValues, (error) => {
+      if (error) {
+        dispatch({
+          type: ADD_NEW_OFFER_ERRORS,
+          payload: [{
+            name: 'name',
+            message: error.reason,
+          }],
+        });
+      } else {
+        dispatch({
+          type: ADD_NEW_OFFER_ERRORS,
+          payload: [],
+        });
+        callback();
+      }
+    });
+  } else {
+    // Map simplschema validation errors to error messages
+    const validationErrors = _.map(editOfferValidationSchema.validationErrors(), o =>
+      _.extend({ message: editOfferValidationSchema.keyErrorMessage(o.name) }, o));
+
+    return dispatch({
+      type: ADD_NEW_OFFER_ERRORS,
+      payload: validationErrors,
+    });
+  }
+};
+
 export const addNewOffer = ({ name, url, userId, userName }, callback) => (dispatch) => {
-  const addNewOfferValidationSchema = AddNewOfferValidationSchema.namedContext();
+  const addNewOfferValidationSchema = OfferValidationSchema.namedContext();
   addNewOfferValidationSchema.validate({ name, url });
 
   if (addNewOfferValidationSchema.isValid()) {

@@ -63,7 +63,7 @@ class AddNewModal extends Component {
     const {
       offerNameInput,
       offerUrlInput,
-      offerUserInput,
+      offerUserInput = {},
     } = this.baseEl;
 
     const {
