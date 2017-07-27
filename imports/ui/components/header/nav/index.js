@@ -48,14 +48,14 @@ class Nav extends Component {
         key="3"
         match={match}
         history={history}
-        name="Settings"
-        path="/settings"
-        defaultPath="/settings/rs-config"
-        icon="icon-settings"
+        name="Whitelist"
+        path="/whitelist"
+        defaultPath="/whitelist/manage"
+        icon="icon-shield"
         subNav={[
           {
-            name: 'RS Config',
-            path: '/settings/rs-config',
+            name: 'Manage',
+            path: '/whitelist/manage',
             icon: 'icon-settings',
           },
         ]}

@@ -8,26 +8,29 @@ import {
   Switch,
 } from 'react-router';
 import RequireAuth from '../auth/hocs/require-auth';
-import RSConfig from './rs-config';
+import ManageWhitelistedDomains from './manage';
 
-class Settings extends Component {
+class Whitelist extends Component {
   render() {
     const { match } = this.props;
 
     return (
       <Switch>
-        <Route path={`${match.url}/rs-config`} component={RSConfig} />
+        <Route
+          path={`${match.url}/manage`}
+          component={ManageWhitelistedDomains}
+        />
       </Switch>
     );
   }
 }
 
-Settings.propTypes = {
+Whitelist.propTypes = {
   match: PropTypes.shape({}),
 };
 
-Settings.defaultProps = {
+Whitelist.defaultProps = {
   match: null,
 };
 
-export default withRouter(RequireAuth(Settings));
+export default withRouter(RequireAuth(Whitelist));
