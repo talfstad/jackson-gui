@@ -67,7 +67,7 @@ class AddNewModal extends Component {
   handleOnChange() {
     const {
       whitelistedDomainNameInput,
-      whitelistedUserInput = {},
+      whitelistedUserInput,
     } = this.baseEl;
 
     const {
