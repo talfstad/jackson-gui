@@ -3,57 +3,51 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
-  addNewOffer,
+  addNewWhitelisted,
   updateAddValues,
-} from '/imports/actions/offers';
+} from '/imports/actions/whitelisted';
 
 import Base from './base';
 
 class AddNewModal extends Component {
   getDefaultValues() {
-    const { offerValues } = this.props;
-    const { userId = '' } = offerValues;
+    const { whitelistedValues } = this.props;
+    const { userId = '' } = whitelistedValues;
 
     return ([
       {
         name: 'name',
-        value: offerValues.name,
+        value: whitelistedValues.name,
       },
       {
-        name: 'url',
-        value: offerValues.url,
-      },
-      {
-        name: 'offer-user',
+        name: 'whitelisted-user',
         value: userId,
       },
     ]);
   }
 
-  handleAddNewOffer(e) {
+  handleAddNewWhitelisted(e) {
     if (e) e.preventDefault();
     const {
-      addNewOfferAction,
+      addNewWhitelistedAction,
     } = this.props;
     const {
-      offerNameInput,
-      offerUrlInput,
-      offerUserInput,
+      whitelistedDomainNameInput,
+      whitelistedUserInput,
     } = this.baseEl;
 
-    const name = offerNameInput.value;
-    const url = offerUrlInput.value;
+    const name = whitelistedDomainNameInput.value;
 
     let userId = null;
     let userName = null;
 
-    if (offerUserInput) {
-      const selectedOption = offerUserInput.options[offerUserInput.selectedIndex];
+    if (whitelistedUserInput) {
+      const selectedOption = whitelistedUserInput.options[whitelistedUserInput.selectedIndex];
       userId = selectedOption.getAttribute('data-user-id');
       userName = selectedOption.getAttribute('data-user-name');
     }
 
-    addNewOfferAction({ name, url, userId, userName }, () => {
+    addNewWhitelistedAction({ name, userId, userName }, () => {
       // Note: must include this here to get desired context.
       this.resetAddValues();
       this.baseEl.closeModal();
@@ -67,15 +61,13 @@ class AddNewModal extends Component {
 
     updateAddValuesAction({
       name: '',
-      url: '',
     });
   }
 
   handleOnChange() {
     const {
-      offerNameInput,
-      offerUrlInput,
-      offerUserInput,
+      whitelistedDomainNameInput,
+      whitelistedUserInput = {},
     } = this.baseEl;
 
     const {
@@ -85,8 +77,8 @@ class AddNewModal extends Component {
     let userId = null;
     let userName = null;
 
-    if (offerUserInput) {
-      const selectedOption = offerUserInput.options[offerUserInput.selectedIndex];
+    if (whitelistedUserInput) {
+      const selectedOption = whitelistedUserInput.options[whitelistedUserInput.selectedIndex];
       userId = selectedOption.getAttribute('data-user-id');
       userName = selectedOption.getAttribute('data-user-name');
     }
@@ -94,8 +86,7 @@ class AddNewModal extends Component {
     updateAddValuesAction({
       userId,
       userName,
-      name: offerNameInput.value,
-      url: offerUrlInput.value,
+      name: whitelistedDomainNameInput.value,
     });
   }
 
@@ -113,9 +104,9 @@ class AddNewModal extends Component {
         defaultValues={this.getDefaultValues()}
         handleOnChange={e => this.handleOnChange(e)}
         users={users}
-        handleModalAction={e => this.handleAddNewOffer(e)}
-        modalTitle="Add New Offer"
-        modalRedirectRouteOnClose="/offers/manage"
+        handleModalAction={e => this.handleAddNewWhitelisted(e)}
+        modalTitle="Whitelist New Domain"
+        modalRedirectRouteOnClose="/whitelisted/manage"
         errors={errors}
       />
     );
@@ -126,28 +117,28 @@ AddNewModal.propTypes = {
   history: PropTypes.shape({}),
   users: PropTypes.arrayOf(PropTypes.object),
   errors: PropTypes.arrayOf(PropTypes.object),
-  addNewOfferAction: PropTypes.func,
+  addNewWhitelistedAction: PropTypes.func,
   updateAddValuesAction: PropTypes.func,
-  offerValues: PropTypes.shape({}),
+  whitelistedValues: PropTypes.shape({}),
 };
 
 AddNewModal.defaultProps = {
   updateAddValuesAction: null,
-  addNewOfferAction: null,
+  addNewWhitelistedAction: null,
   history: {},
-  offerValues: {},
+  whitelistedValues: {},
   users: [],
   errors: [],
 };
 
 const mapStateToProps = state => ({
   users: state.users.userList,
-  errors: state.offers.addNewErrors,
-  offerValues: state.offers.addOffer,
+  errors: state.whitelisted.addNewErrors,
+  whitelistedValues: state.whitelisted.addWhitelisted,
 });
 
 const actions = {
-  addNewOfferAction: addNewOffer,
+  addNewWhitelistedAction: addNewWhitelisted,
   updateAddValuesAction: updateAddValues,
 };
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
+  Route,
   Link,
 } from 'react-router-dom';
 import _ from 'lodash';
@@ -10,6 +11,8 @@ import {
   fetchWhitelistedDomains,
   stopWhitelistedDomainsSub,
 } from '/imports/actions/whitelisted';
+
+import AddNew from './add-new-modal';
 
 import ManageWhitelistTable from './manage-whitelisted-table';
 
@@ -38,7 +41,10 @@ class ManageWhitelist extends Component {
   }
 
   render() {
-    const { match } = this.props;
+    const {
+      match,
+      search,
+    } = this.props;
 
     return (
       <div className="container-fluid">
@@ -70,6 +76,7 @@ class ManageWhitelist extends Component {
                             <input
                               ref={(c) => { this.searchEl = c; }}
                               onChange={_.debounce(() => this.handleSearch(), 200)}
+                              defaultValue={search}
                               className="form-control"
                               type="text"
                               placeholder="Search"
@@ -102,6 +109,11 @@ class ManageWhitelist extends Component {
             </div>
           </div>
         </div>
+        <Route
+          exact
+          path={`${match.url}/new`}
+          component={AddNew}
+        />
       </div>
     );
   }

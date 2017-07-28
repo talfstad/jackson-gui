@@ -42,7 +42,10 @@ class ManageOffers extends Component {
   }
 
   render() {
-    const { match } = this.props;
+    const {
+      match,
+      search,
+    } = this.props;
 
     return (
       <div className="container-fluid">
@@ -74,6 +77,7 @@ class ManageOffers extends Component {
                             <input
                               ref={(c) => { this.searchEl = c; }}
                               onChange={_.debounce(() => this.handleSearch(), 200)}
+                              defaultValue={search}
                               className="form-control"
                               type="text"
                               placeholder="Search"

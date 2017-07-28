@@ -67,12 +67,12 @@ export const stopWhitelistedDomainsSub = () => (dispatch) => {
   dispatch(stopSubscription(WHITELISTED_SUB));
 };
 
-export const addNewWhitelisted = ({ name, url, userId, userName }, callback) => (dispatch) => {
+export const addNewWhitelisted = ({ name, userId, userName }, callback) => (dispatch) => {
   const addNewWhitelistedValidationSchema = WhitelistValidationSchema.namedContext();
-  addNewWhitelistedValidationSchema.validate({ name, url });
+  addNewWhitelistedValidationSchema.validate({ name });
 
   if (addNewWhitelistedValidationSchema.isValid()) {
-    Meteor.call('addNewWhitelisted', { name, url, userId, userName }, (error) => {
+    Meteor.call('addNewWhitelisted', { name, userId, userName }, (error) => {
       if (error) {
         dispatch({
           type: ADD_NEW_WHITELISTED_ERRORS,

@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "commitmsg": "validate-commit-msg $GIT_PARAMS",
+    "lint": "eslint .",
     "start": "meteor run",
     "deploy": "DEPLOY_HOSTNAME=galaxy.meteor.com meteor deploy landerrs.buildcave.com --settings ./settings.json",
     "dev": "MONGO_URL=mongodb://jackson:Wewillrockyou1986!@ds153761-a0.mlab.com:53761,ds153761-a1.mlab.com:53761/test?replicaSet=rs-ds153761 meteor run"
@@ -36,16 +37,17 @@
     "simpl-schema": "^0.3.1"
   },
   "devDependencies": {
-    "husky": "0.13.3",
+    "babel-eslint": "^7.1.1",
     "babel-preset-env": "^1.1.4",
     "babel-preset-react": "^6.16.0",
-    "babel-eslint": "^7.1.1",
-    "eslint-plugin-meteor": "^4.0.1",
     "eslint": "^3.19.0",
-    "validate-commit-msg": "2.12.1",
     "eslint-config-airbnb": "^15.0.1",
-    "eslint-plugin-import": "^2.2.0",
+    "eslint-import-resolver-meteor": "^0.4.0",
+    "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
-    "eslint-plugin-react": "^7.0.1"
+    "eslint-plugin-meteor": "^4.0.1",
+    "eslint-plugin-react": "^7.0.1",
+    "husky": "0.13.3",
+    "validate-commit-msg": "2.12.1"
   }
 }
