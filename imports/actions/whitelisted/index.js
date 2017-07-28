@@ -106,13 +106,13 @@ export const updateAddValues = values => ({
   payload: values,
 });
 
-export const deleteOffer = ({ whitelistedId }, callback) => (dispatch) => {
+export const deleteWhitelistedDomain = ({ whitelistedId }, callback) => (dispatch) => {
   if (_.isUndefined(whitelistedId)) {
     callback();
     return;
   }
 
-  Meteor.call('deleteWhitelisted', { whitelistedId }, (error) => {
+  Meteor.call('deleteWhitelistedDomain', { whitelistedId }, (error) => {
     if (error) {
       dispatch({
         type: DELETE_WHITELISTED_ERRORS,

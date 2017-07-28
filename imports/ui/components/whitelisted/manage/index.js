@@ -13,6 +13,7 @@ import {
 } from '/imports/actions/whitelisted';
 
 import AddNew from './add-new-modal';
+import DeleteWhitelisted from './delete-whitelisted-modal';
 
 import ManageWhitelistTable from './manage-whitelisted-table';
 
@@ -113,6 +114,11 @@ class ManageWhitelist extends Component {
           exact
           path={`${match.url}/new`}
           component={AddNew}
+        />
+        <Route
+          exact
+          path={`${match.url}/delete`}
+          component={DeleteWhitelisted}
         />
       </div>
     );
