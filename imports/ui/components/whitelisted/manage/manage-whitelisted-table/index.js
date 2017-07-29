@@ -36,6 +36,7 @@ class ManageWhitelistedTable extends Component {
     const columns = [
       {
         Header: '#',
+        sortable: false,
         width: 40,
         Cell: row => (
           <div className="text-align-center">

@@ -37,6 +37,7 @@ class ManageRipsTable extends Component {
       {
         Header: '#',
         width: 40,
+        sortable: false,
         Cell: row => (
           <div className="text-align-center">
             {(page * pageSize) + row.index + 1}
