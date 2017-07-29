@@ -32,12 +32,11 @@ class ManageWhitelistedTable extends Component {
       {
         Header: 'Name',
         accessor: 'name',
-        minWidth: 400,
       },
       {
         Header: 'User',
         accessor: 'userName',
-        minWidth: 250,
+        width: 150,
       },
       {
         Header: '',

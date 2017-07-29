@@ -42,7 +42,7 @@ class ManageOffersTable extends Component {
       {
         Header: 'User',
         accessor: 'userName',
-        width: 250,
+        width: 150,
       },
       {
         Header: '',

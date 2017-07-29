@@ -4,6 +4,7 @@ import users from './users';
 import auth from './auth';
 import offers from './offers';
 import whitelisted from './whitelisted';
+import rips from './rips';
 
 const rootReducer = combineReducers({
   auth,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   users,
   offers,
   whitelisted,
+  rips,
 });
 
 export default rootReducer;
