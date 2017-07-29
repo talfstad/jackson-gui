@@ -9,7 +9,6 @@ import 'react-table/react-table.css';
 class ManageRipsTable extends Component {
   onFetchData(state) {
     const { fetchRipsAction } = this.props;
-
     const {
       page,
       pageSize,
@@ -29,10 +28,31 @@ class ManageRipsTable extends Component {
   }
 
   render() {
+    const {
+      page,
+      pageSize,
+    } = this.props;
+
     const columns = [
+      {
+        Header: '#',
+        width: 40,
+        Cell: row => (
+          <div className="text-align-center">
+            {(page * pageSize) + row.index + 1}
+          </div>
+        ),
+      },
       {
         Header: 'Url',
         accessor: 'url',
+        Cell: ({ row }) => (
+          <div>
+            <a target="_blank" href={`http://${row.url}`}>
+              {row.url}
+            </a>
+          </div>
+        ),
       },
       {
         Header: 'Daily Jacks',
@@ -95,6 +115,7 @@ class ManageRipsTable extends Component {
         width: 150,
         Cell: ({ row }) => (
           <div>
+            {/* row.last_updated.toString() */}
             {moment(row.last_updated).fromNow()}
           </div>
         ),
@@ -135,6 +156,7 @@ class ManageRipsTable extends Component {
             }]}
             data={this.props.list}
             loading={this.props.loading}
+            pageSizeOptions={[5, 10, 20, 25]}
           />
         </div>
       </div>
@@ -149,9 +171,13 @@ ManageRipsTable.propTypes = {
   search: PropTypes.string,
   pages: PropTypes.number,
   defaultPageSize: PropTypes.number,
+  page: PropTypes.number,
+  pageSize: PropTypes.number,
 };
 
 ManageRipsTable.defaultProps = {
+  page: 0,
+  pageSize: 10,
   fetchRipsAction: null,
   list: [],
   search: '',

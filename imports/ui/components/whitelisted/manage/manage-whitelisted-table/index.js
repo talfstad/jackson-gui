@@ -28,7 +28,21 @@ class ManageWhitelistedTable extends Component {
   }
 
   render() {
+    const {
+      page,
+      pageSize,
+    } = this.props;
+
     const columns = [
+      {
+        Header: '#',
+        width: 40,
+        Cell: row => (
+          <div className="text-align-center">
+            {(page * pageSize) + row.index + 1}
+          </div>
+        ),
+      },
       {
         Header: 'Name',
         accessor: 'name',
@@ -80,6 +94,7 @@ class ManageWhitelistedTable extends Component {
             }]}
             data={this.props.list}
             loading={this.props.loading}
+            pageSizeOptions={[5, 10, 20, 25]}
           />
         </div>
       </div>
@@ -88,6 +103,8 @@ class ManageWhitelistedTable extends Component {
 }
 
 ManageWhitelistedTable.propTypes = {
+  pageSize: PropTypes.number,
+  page: PropTypes.number,
   fetchWhitelistedDomainsAction: PropTypes.func,
   list: PropTypes.arrayOf(PropTypes.object),
   loading: PropTypes.bool,
@@ -97,6 +114,8 @@ ManageWhitelistedTable.propTypes = {
 };
 
 ManageWhitelistedTable.defaultProps = {
+  page: 0,
+  pageSize: 10,
   fetchWhitelistedDomainsAction: null,
   list: [],
   search: '',

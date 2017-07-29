@@ -102,6 +102,8 @@ class ManageOffers extends Component {
                         pages={this.props.pages}
                         search={this.props.search}
                         defaultPageSize={this.props.defaultPageSize}
+                        page={this.props.page}
+                        pageSize={this.props.pageSize}
                       />
                     </div>
                   </div>

@@ -28,7 +28,21 @@ class ManageOffersTable extends Component {
   }
 
   render() {
+    const {
+      page,
+      pageSize,
+    } = this.props;
+
     const columns = [
+      {
+        Header: '#',
+        width: 40,
+        Cell: row => (
+          <div className="text-align-center">
+            {(page * pageSize) + row.index + 1}
+          </div>
+        ),
+      },
       {
         Header: 'Name',
         accessor: 'name',
@@ -89,6 +103,7 @@ class ManageOffersTable extends Component {
             }]}
             data={this.props.list}
             loading={this.props.loading}
+            pageSizeOptions={[5, 10, 20, 25]}
           />
         </div>
       </div>
@@ -97,6 +112,8 @@ class ManageOffersTable extends Component {
 }
 
 ManageOffersTable.propTypes = {
+  page: PropTypes.number,
+  pageSize: PropTypes.number,
   fetchOffersAction: PropTypes.func,
   list: PropTypes.arrayOf(PropTypes.object),
   loading: PropTypes.bool,
@@ -106,6 +123,8 @@ ManageOffersTable.propTypes = {
 };
 
 ManageOffersTable.defaultProps = {
+  page: 0,
+  pageSize: 10,
   fetchOffersAction: null,
   list: [],
   search: '',
