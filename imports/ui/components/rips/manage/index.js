@@ -71,7 +71,7 @@ class ManageRips extends Component {
                           </span>
                         </div>
                         <div className="actions">
-                          <div className="mr10 pull-left search">
+                          <div className="pull-left search">
                             <input
                               ref={(c) => { this.searchEl = c; }}
                               onChange={_.debounce(() => this.handleSearch(), 200)}

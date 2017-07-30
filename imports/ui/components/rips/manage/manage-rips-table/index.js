@@ -6,6 +6,8 @@ import moment from 'moment';
 
 import 'react-table/react-table.css';
 
+import CountryFlag from './country-flag';
+
 class ManageRipsTable extends Component {
   onFetchData(state) {
     const { fetchRipsAction } = this.props;
@@ -54,6 +56,51 @@ class ManageRipsTable extends Component {
             </a>
           </div>
         ),
+      },
+      {
+        Header: 'Top 3 Countries',
+        width: 120,
+        sortable: false,
+        Cell: ({ original }) => {
+          // console.log(original);
+          // sum all hourly up by cc. sort it
+          const { hourly } = original.archive;
+
+//           // for each hour merge hits together with key as cc, sum the hits.
+//
+//           _.reduce(hourly, (sumByCC, hourOfHits) => {
+//             return // object with all country codes for this hour summed up
+//
+// {
+//   us: 10,
+//   au: 20,
+//
+// }
+//             //
+//           }
+// totalSum + _.reduce(hourOfHits.hits, (hourlySum, hit) => hourlySum + hit.hits, 0), {});
+
+// render this from a CountryFlag component which will initialize the
+// $('[data-toggle="tooltip"]').tooltip(); on mount.
+          return (
+            <div className="text-align-center">
+              <CountryFlag
+                hits={210}
+                cc="US"
+              />
+              <CountryFlag
+                className="ml10"
+                hits={10}
+                cc="au"
+              />
+              <CountryFlag
+                className="ml10"
+                hits={220}
+                cc="ca"
+              />
+            </div>
+          );
+        },
       },
       {
         Header: 'Daily Jacks',
@@ -111,7 +158,7 @@ class ManageRipsTable extends Component {
         width: 150,
       },
       {
-        Header: 'Most Recent',
+        Header: 'Updated',
         accessor: 'last_updated',
         width: 150,
         Cell: ({ row }) => (
@@ -152,7 +199,7 @@ class ManageRipsTable extends Component {
             onFetchData={(state, instance) => this.onFetchData(state, instance)}
             pages={this.props.pages}
             defaultSorted={[{
-              id: 'last_updated',
+              id: 'daily_hits',
               desc: true,
             }]}
             data={this.props.list}
@@ -184,7 +231,7 @@ ManageRipsTable.defaultProps = {
   search: '',
   loading: true,
   pages: -1,
-  defaultPageSize: 10,
+  defaultPageSize: 20,
 };
 
 export default ManageRipsTable;

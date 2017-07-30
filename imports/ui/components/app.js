@@ -8,6 +8,7 @@ import {
 } from 'react-router-dom';
 import { Switch } from 'react-router';
 
+import 'flag-icon-css/css/flag-icon.min.css';
 import '/imports/ui/css/app.scss';
 import '/imports/ui/css/imports/font-awesome.css';
 

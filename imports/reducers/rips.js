@@ -20,7 +20,7 @@ const initialState = {
   sorted: [],
   pageSize: 10,
   addNewErrors: [],
-  defaultPageSize: 10,
+  defaultPageSize: 20,
   count: 0,
 };
 
