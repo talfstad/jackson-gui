@@ -62,42 +62,42 @@ class ManageRipsTable extends Component {
         width: 120,
         sortable: false,
         Cell: ({ original }) => {
-          // console.log(original);
-          // sum all hourly up by cc. sort it
           const { hourly } = original.archive;
 
-//           // for each hour merge hits together with key as cc, sum the hits.
-//
-//           _.reduce(hourly, (sumByCC, hourOfHits) => {
-//             return // object with all country codes for this hour summed up
-//
-// {
-//   us: 10,
-//   au: 20,
-//
-// }
-//             //
-//           }
-// totalSum + _.reduce(hourOfHits.hits, (hourlySum, hit) => hourlySum + hit.hits, 0), {});
+          // 1. make 1 giant array of all the country codes and their values { cc: "US": hits: 10 }
+          const totalHitsArr =
+            _.reduce(hourly, (accumulator, hour) => accumulator.concat(hour.hits), []);
+          // 2. group by cc to get object with all values associated to their country code
+          const groupTotalByCC = _.groupBy(totalHitsArr, 'cc');
+          const groupTotalByCCFiltered = _.omit(groupTotalByCC, 'undefined');
+          // 3. map that and total all of that cc, return it. -> [{ ca: 400, us: 100 }]
+          const hitsTotaledByCC = _.map(groupTotalByCCFiltered, (val, key) => ({
+            cc: key,
+            hits: _.reduce(val, (sum, hitsByCC) => sum + hitsByCC.hits, 0),
+          }));
 
-// render this from a CountryFlag component which will initialize the
-// $('[data-toggle="tooltip"]').tooltip(); on mount.
+          // 4. custom sort where we determine which val is largest
+          const sortDesc = hitsTotaledByCC.sort((a, b) => {
+            if (a.hits > b.hits) return -1;
+            if (a.hits < b.hits) return 1;
+            return 0;
+          });
+
+          // 5. build country flags up to top 3, or less.
           return (
             <div className="text-align-center">
-              <CountryFlag
-                hits={210}
-                cc="US"
-              />
-              <CountryFlag
-                className="ml10"
-                hits={10}
-                cc="au"
-              />
-              <CountryFlag
-                className="ml10"
-                hits={220}
-                cc="ca"
-              />
+              <div style={{ width: '90px', textAlign: 'left', display: 'inline-block' }}>
+                {
+                  sortDesc.slice(0, 3).map((item, idx) => (
+                    <CountryFlag
+                      key={item.cc}
+                      cc={item.cc}
+                      hits={item.hits}
+                      className={idx > 0 ? 'ml10' : ''}
+                    />
+                  ))
+                }
+              </div>
             </div>
           );
         },

@@ -6,6 +6,13 @@ class CountryFlag extends Component {
     $(this.el).tooltip();
   }
 
+  componentDidUpdate() {
+    $(this.el)
+      .attr('title', `${this.props.hits} Hits in ${this.props.cc.toUpperCase()}`)
+      .tooltip('fixTitle')
+      .tooltip('setContent');
+  }
+
   render() {
     const {
       cc,
