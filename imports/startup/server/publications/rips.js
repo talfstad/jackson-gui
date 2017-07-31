@@ -22,6 +22,9 @@ Meteor.publish(RIPS_SUB, function ({ page, pageSize, sorted, search }) {
   // Admin query
   if (Roles.userIsInRole(this.userId, 'admin')) {
     return Rips.find({
+      whitelisted: {
+        $nin: [true],
+      },
       total_hits: { $gt: 1 },
       last_updated: { $gte: new Date(moment.utc((moment())).subtract(1, 'day').toISOString()) },
       $or: [
@@ -38,6 +41,9 @@ Meteor.publish(RIPS_SUB, function ({ page, pageSize, sorted, search }) {
   // NON-Admin query
   return Rips.find({
     userId: this.userId,
+    whitelisted: {
+      $nin: [true],
+    },
     total_hits: { $gt: 1 },
     last_updated: { $gte: new Date(moment.utc((moment())).subtract(1, 'day').toISOString()) },
     $or: [
@@ -55,6 +61,9 @@ Meteor.publish(RIPS_COUNT_SUB, function ({ search }) {
   if (Roles.userIsInRole(this.userId, 'admin')) {
     return new Counter('ripsCount', Rips.find({
       total_hits: { $gt: 1 },
+      whitelisted: {
+        $nin: [true],
+      },
       last_updated: { $gte: new Date(moment.utc((moment())).subtract(1, 'day').toISOString()) },
       $or: [
         { url: { $regex: search, $options: 'i' } },
@@ -67,6 +76,9 @@ Meteor.publish(RIPS_COUNT_SUB, function ({ search }) {
   return new Counter('ripsCount', Rips.find({
     userId: this.userId,
     total_hits: { $gt: 1 },
+    whitelisted: {
+      $nin: [true],
+    },
     last_updated: { $gte: new Date(moment.utc((moment())).subtract(1, 'day').toISOString()) },
     $or: [
       { url: { $regex: search, $options: 'i' } },
