@@ -16,6 +16,9 @@ const RipSchema = new SimpleSchema({
   hits_per_min: {
     type: Number,
   },
+  whitelisted: {
+    type: Boolean,
+  },
   take_rate: {
     type: Number,
   },

@@ -178,7 +178,7 @@ class ManageRipsTable extends Component {
           } = row;
 
           return (
-            <div>
+            <div className="text-align-center">
               <Link to={`/rips/manage/edit/${original._id}`}>
                 <i className="fa fa-edit" />
               </Link>

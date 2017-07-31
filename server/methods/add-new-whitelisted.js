@@ -4,6 +4,7 @@ import { handleError } from '/imports/api/meteor/methods-common/method-helpers';
 import {
   Whitelisted,
   Users,
+  Rips,
 } from '/imports/api/meteor/collections';
 
 Meteor.methods({
@@ -40,6 +41,14 @@ Meteor.methods({
           userId: user._id,
         });
       }
+      // whitelist all rips with this domain.
+      Rips.update({
+        url: { $regex: `^${name}`, $options: 'i' },
+      }, {
+        $set: { whitelisted: true },
+      }, {
+        multi: true,
+      });
     } else {
       handleError('Invalid Request');
     }
