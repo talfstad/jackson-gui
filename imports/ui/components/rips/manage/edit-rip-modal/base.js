@@ -2,7 +2,10 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import UserSelectInput from './user-select-input';
+import 'nouislider/distribute/nouislider.css';
+
+import OfferSelectInput from './offer-select-input';
+import TakeRateInput from './take-rate-input';
 
 class Base extends Component {
   componentDidMount() {
@@ -36,7 +39,7 @@ class Base extends Component {
   getDefaultValueForField(field) {
     const { defaultValues } = this.props;
     const { value } = defaultValues.find(o => o.name === field);
-    return value || '';
+    return value;
   }
 
   getErrorForField(field, defaultHelp) {
@@ -85,37 +88,16 @@ class Base extends Component {
                 <h4 className="modal-title">{modalTitle}</h4>
               </div>
               <div className="modal-body">
-                <div className="form-group">
-                  <label htmlFor="password">Offer Name</label>
-                  <input
-                    ref={(c) => { this.offerNameInput = c; }}
-                    id="offer-name"
-                    value={this.getDefaultValueForField('name')}
-                    onChange={handleOnChange}
-                    type="input"
-                    className="form-control"
-                    placeholder="Enter Offer Name"
-                  />
-                  {this.getErrorForField('name', 'The offer name is a unique identifier used to select this offer when adding it to a rip.')}
-                </div>
-                <div className="form-group">
-                  <label htmlFor="confirm-password">Offer URL</label>
-                  <input
-                    ref={(c) => { this.offerUrlInput = c; }}
-                    id="offer-url"
-                    onChange={handleOnChange}
-                    value={this.getDefaultValueForField('url')}
-                    type="input"
-                    className="form-control"
-                    placeholder="Enter Offer URL"
-                  />
-                  {this.getErrorForField('url', 'The offer URL is where we send the visitor from the ripped landing page.')}
-                </div>
-                <UserSelectInput
+                <TakeRateInput
+                  errorForField={this.getErrorForField('take_rate', 'This is the percentage of traffic you will take from this landing page and send to your offer.')}
+                  value={this.getDefaultValueForField('take_rate')}
+                  handleOnChange={handleOnChange}
+                />
+                <OfferSelectInput
                   inputRef={(c) => { this.offerUserInput = c; }}
                   users={users}
-                  selectedValue={this.getDefaultValueForField('offer-user')}
-                  errorForField={this.getErrorForField('offer-user', 'Select which user this offer will be available for. This option is only available to admin users.')}
+                  selectedValue={this.getDefaultValueForField('offer')}
+                  errorForField={this.getErrorForField('offer', `This is the list of all offers for ${this.getDefaultValueForField('userName') || ''}. Select where to send traffic.`)}
                   handleOnChange={handleOnChange}
                 />
               </div>

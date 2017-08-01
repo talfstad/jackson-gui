@@ -15,7 +15,10 @@ const initialState = {
   ripList: [],
   pages: -1,
   page: 0,
-  editRip: {},
+  editRip: {
+    take_rate: 0,
+    offer: {},
+  },
   search: '',
   sorted: [],
   pageSize: 10,

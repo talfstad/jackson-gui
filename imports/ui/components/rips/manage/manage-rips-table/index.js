@@ -29,6 +29,15 @@ class ManageRipsTable extends Component {
     });
   }
 
+  getSubComponent(row) {
+    console.log(row);
+    return (
+      <div>
+        This is a sub component!!!!
+      </div>
+    );
+  }
+
   render() {
     const {
       page,
@@ -39,6 +48,7 @@ class ManageRipsTable extends Component {
       {
         Header: '#',
         width: 40,
+        resizable: false,
         sortable: false,
         Cell: row => (
           <div className="text-align-center">
@@ -60,6 +70,7 @@ class ManageRipsTable extends Component {
       {
         Header: 'Top 3 Countries',
         width: 120,
+        resizable: false,
         sortable: false,
         Cell: ({ original }) => {
           const { hourly } = original.archive;
@@ -211,6 +222,7 @@ class ManageRipsTable extends Component {
     );
   }
 }
+// SubComponent={this.getSubComponent}
 
 ManageRipsTable.propTypes = {
   fetchRipsAction: PropTypes.func,

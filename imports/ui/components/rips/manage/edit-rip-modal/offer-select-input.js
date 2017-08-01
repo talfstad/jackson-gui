@@ -5,7 +5,7 @@ import RenderIfAdmin from '/imports/ui/components/auth/hocs/render-if-admin';
 import 'bootstrap-select';
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
 
-class UserSelectInput extends Component {
+class OfferSelectInput extends Component {
   componentDidMount() {
     $('.bs-select').selectpicker({
       iconBase: 'fa',
@@ -17,39 +17,50 @@ class UserSelectInput extends Component {
     $('.bs-select').selectpicker('refresh');
   }
 
-  buildUserList() {
+  buildOfferList() {
     const { users } = this.props;
     return users.map(user => (
       <option
         key={user._id}
         value={user._id}
-        data-user-name={user.name}
-        data-user-id={user._id}
+        data-offer-name={user.name}
+        data-offer-id={user._id}
       >
         {user.name}
       </option>
     ));
   }
 
+  handleOnChange(e) {
+    e.preventDefault();
+    const { handleOnChange } = this.props;
+
+    handleOnChange({
+      offer: {
+        _id: this.el.value,
+        url: this.el.getAttribute('data-offer-name'),
+      },
+    });
+  }
+
   render() {
     const {
-      handleOnChange,
       selectedValue,
       errorForField,
     } = this.props;
 
     return (
       <div className="form-group">
-        <label htmlFor="offer-user">Offer User</label>
+        <label htmlFor="offer-user">Current Offer</label>
         <select
-          ref={this.props.inputRef}
-          onChange={handleOnChange}
-          value={selectedValue}
+          ref={(c) => { this.el = c; }}
+          onChange={this.handleOnChange}
+          value={selectedValue || ''}
           className="bs-select form-control"
           data-live-search="true"
           data-size="8"
         >
-          {this.buildUserList()}
+          {this.buildOfferList()}
         </select>
         {errorForField}
       </div>
@@ -57,21 +68,19 @@ class UserSelectInput extends Component {
   }
 }
 
-UserSelectInput.propTypes = {
+OfferSelectInput.propTypes = {
   handleOnChange: PropTypes.func,
   errorForField: PropTypes.shape({}),
   selectedValue: PropTypes.string,
   users: PropTypes.arrayOf(PropTypes.object),
-  inputRef: PropTypes.func,
 };
 
-UserSelectInput.defaultProps = {
+OfferSelectInput.defaultProps = {
   handleOnChange: null,
   selectedValue: null,
   errorForField: {},
   getErrorForField: null,
   users: [],
-  inputRef: null,
 };
 
-export default RenderIfAdmin(UserSelectInput);
+export default RenderIfAdmin(OfferSelectInput);

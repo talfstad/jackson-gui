@@ -4,95 +4,75 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
-  editOffer,
-  subscribeToEditOffer,
+  editRip,
+  subscribeToEditRip,
   updateEditValues,
-  stopEditOfferSub,
-} from '/imports/actions/offers';
+  stopEditRipSub,
+} from '/imports/actions/rips';
 
 import Base from './base';
 
-class EditOfferModal extends Component {
+class EditRipModal extends Component {
   componentWillMount() {
     const {
-      subscribeToEditOfferAction,
-      match: { params: { offerId } },
+      subscribeToEditRipAction,
+      match: { params: { ripId } },
       history,
     } = this.props;
 
     // Intent: Redirect if we don't have an
-    // offer id to edit.
-    if (_.isUndefined(offerId)) {
-      history.push('/offers/manage');
+    // rip id to edit.
+    if (_.isUndefined(ripId)) {
+      history.push('/rips/manage');
     }
 
-    subscribeToEditOfferAction({ offerId });
+    subscribeToEditRipAction({ ripId });
   }
 
   componentWillUnmount() {
     const {
-      stopEditOfferSubAction,
+      stopEditRipSubAction,
     } = this.props;
     // Intent: must stop subscription to Remove
-    // the edit offer from the mini mongo db.
-    // Otherwise it will be in the paging for offer list.
-    stopEditOfferSubAction();
+    // the edit rip from the mini mongo db.
+    // Otherwise it will be in the paging for rip list.
+    stopEditRipSubAction();
   }
 
   getDefaultValues() {
-    const { offerValues } = this.props;
-    const { userId = '' } = offerValues;
-
+    const { ripValues } = this.props;
     return ([
       {
-        name: 'name',
-        value: offerValues.name,
+        name: 'take_rate',
+        value: ripValues.take_rate,
       },
       {
-        name: 'url',
-        value: offerValues.url,
+        name: 'offer',
+        value: _.isUndefined(ripValues.offer) ? null : ripValues.offer.name,
       },
       {
-        name: 'offer-user',
-        value: userId,
+        name: 'userName',
+        value: ripValues.userName,
       },
     ]);
   }
 
-  handleOnChange() {
-    const {
-      offerNameInput,
-      offerUrlInput,
-      offerUserInput,
-    } = this.baseEl;
-
+  handleOnChange(values) {
     const {
       updateEditValuesAction,
-      offerValues,
     } = this.props;
 
-    let userName = offerValues.userName;
-    if (offerUserInput) {
-      const selectedOption = offerUserInput.options[offerUserInput.selectedIndex];
-      userName = selectedOption.getAttribute('data-user-name');
-    }
-
-    updateEditValuesAction({
-      userName,
-      name: offerNameInput.value,
-      url: offerUrlInput.value,
-      userId: (offerUserInput || {}).value,
-    });
+    updateEditValuesAction(values);
   }
 
-  handleEditOffer(e) {
+  handleEditRip(e) {
     if (e) e.preventDefault();
     const {
-      editOfferAction,
-      offerValues,
+      editRipAction,
+      ripValues,
     } = this.props;
 
-    editOfferAction(offerValues, () => {
+    editRipAction(ripValues, () => {
       // Note: must include this here to get desired context.
       this.baseEl.closeModal();
     });
@@ -101,64 +81,74 @@ class EditOfferModal extends Component {
   render() {
     const {
       history,
-      users,
       errors,
-      offerValues,
+      ripValues,
     } = this.props;
+
+    let modalTitle = ripValues.url;
+
+    if (modalTitle) {
+      if (modalTitle.length > 55) {
+        modalTitle = `Edit ...${ripValues.url.substr(ripValues.url.length - 55)}`;
+      } else {
+        modalTitle = `Edit ${ripValues.url}`;
+      }
+    } else {
+      modalTitle = 'Edit';
+    }
 
     return (
       <Base
         ref={(c) => { this.baseEl = c; }}
-        offerUrlInputRef={(c) => { this.offerUrlInput = c; }}
-        offerUserInputRef={(c) => { this.offerUserInput = c; }}
         history={history}
         defaultValues={this.getDefaultValues()}
-        users={users}
-        handleModalAction={e => this.handleEditOffer(e)}
-        handleOnChange={e => this.handleOnChange(e)}
-        modalTitle={offerValues.name}
-        modalRedirectRouteOnClose="/offers/manage"
+        handleModalAction={e => this.handleEditRip(e)}
+        handleOnChange={values => this.handleOnChange(values)}
+        modalTitle={modalTitle}
+        modalRedirectRouteOnClose="/rips/manage"
         errors={errors}
       />
     );
   }
 }
 
-EditOfferModal.propTypes = {
+EditRipModal.propTypes = {
   history: PropTypes.shape({}),
-  users: PropTypes.arrayOf(PropTypes.object),
   errors: PropTypes.arrayOf(PropTypes.object),
-  stopEditOfferSubAction: PropTypes.func,
-  editOfferAction: PropTypes.func,
-  offerValues: PropTypes.shape({}),
-  subscribeToEditOfferAction: PropTypes.func,
+  stopEditRipSubAction: PropTypes.func,
+  editRipAction: PropTypes.func,
+  ripValues: PropTypes.shape({}),
+  subscribeToEditRipAction: PropTypes.func,
   match: PropTypes.shape({}),
   updateEditValuesAction: PropTypes.func,
 };
 
-EditOfferModal.defaultProps = {
-  subscribeToEditOfferAction: null,
-  stopEditOfferSubAction: null,
-  editOfferAction: null,
-  offerValues: {},
+EditRipModal.defaultProps = {
+  subscribeToEditRipAction: null,
+  stopEditRipSubAction: null,
+  editRipAction: null,
+  ripValues: {
+    offer: {
+      name: '',
+    },
+    take_rate: 0,
+  },
   history: {},
-  users: [],
   updateEditValuesAction: null,
   errors: [],
   match: {},
 };
 
 const mapStateToProps = state => ({
-  users: state.users.userList,
-  errors: state.offers.addNewErrors,
-  offerValues: state.offers.editOffer,
+  errors: state.rips.addNewErrors,
+  ripValues: state.rips.editRip,
 });
 
 const actions = {
-  editOfferAction: editOffer,
-  stopEditOfferSubAction: stopEditOfferSub,
+  editRipAction: editRip,
+  stopEditRipSubAction: stopEditRipSub,
   updateEditValuesAction: updateEditValues,
-  subscribeToEditOfferAction: subscribeToEditOffer,
+  subscribeToEditRipAction: subscribeToEditRip,
 };
 
-export default connect(mapStateToProps, actions)(EditOfferModal);
+export default connect(mapStateToProps, actions)(EditRipModal);

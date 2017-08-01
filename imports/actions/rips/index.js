@@ -33,7 +33,7 @@ export const subscribeToEditRip = ({ ripId }) => (
     get: () =>
       Rips.find({
         _id: (new Mongo.ObjectID(ripId)),
-      }).fetch(),
+      }, { reactive: false }).fetch(),
     subscribe: () => Meteor.subscribe(RIP_EDIT_SUB, { ripId }),
   })
 );

@@ -73,11 +73,29 @@
 .pl10 {
   padding-left: 10px !important;
 }
-
+.mb10 {
+  margin-bottom: 10px !important;
+}
 .ml10 {
   margin-left: 10px !important;
 }
 
 .text-align-center {
   text-align: center !important;
+}
+
+.noUi-value-horizontal {
+  padding-top: 8px;
+}
+.noUi-pips {
+  font: 400 12px Arial;
+}
+
+.take-rate-input {
+  .take-rate-slider-wrapper {
+    padding: 0 15px;
+  }
+  .take-rate-slider {
+    margin-bottom: 60px;
+  }
 }
