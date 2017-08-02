@@ -190,7 +190,7 @@ class ManageRipsTable extends Component {
 
           return (
             <div className="text-align-center">
-              <Link to={`/rips/manage/edit/${original._id}`}>
+              <Link to={`/rips/manage/edit/${original._id}/${original.userId}`}>
                 <i className="fa fa-edit" />
               </Link>
             </div>

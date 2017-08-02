@@ -3,7 +3,7 @@ import SimpleSchema from 'simpl-schema';
 const ResetPasswordValidationSchema = new SimpleSchema({
   name: {
     type: String,
-    min: 6,
+    min: 1,
   },
 });
 

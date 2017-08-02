@@ -27,13 +27,12 @@ class ManageRips extends Component {
     const { fetchRipsAction } = this.props;
 
     const {
-      page,
       pageSize,
       sorted,
     } = this.props;
 
     fetchRipsAction({
-      page,
+      page: 0,
       pageSize,
       sorted,
       search: this.searchEl.value });
@@ -103,7 +102,7 @@ class ManageRips extends Component {
         </div>
         <Route
           exact
-          path={`${match.url}/edit/:ripId`}
+          path={`${match.url}/edit/:ripId/:userId`}
           component={EditRip}
         />
       </div>

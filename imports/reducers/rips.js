@@ -9,6 +9,7 @@ import {
   UPDATE_RIPS_SORTED,
   ADD_NEW_RIP_ERRORS,
   UPDATE_EDIT_RIP_VALUES,
+  AVAILABLE_OFFERS_FOR_RIP_SUBSCRIPTION_CHANGED,
 } from '../actions/rips';
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
     take_rate: 0,
     offer: {},
   },
+  availableOffersForThisRip: [],
   search: '',
   sorted: [],
   pageSize: 10,
@@ -94,6 +96,12 @@ export default (state = initialState, action) => {
           ...state.editRip,
           ...action.payload,
         },
+      };
+    }
+    case AVAILABLE_OFFERS_FOR_RIP_SUBSCRIPTION_CHANGED: {
+      return {
+        ...state,
+        availableOffersForThisRip: action.payload,
       };
     }
     default:

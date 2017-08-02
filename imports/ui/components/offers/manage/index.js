@@ -29,13 +29,12 @@ class ManageOffers extends Component {
     const { fetchOffersAction } = this.props;
 
     const {
-      page,
       pageSize,
       sorted,
     } = this.props;
 
     fetchOffersAction({
-      page,
+      page: 0,
       pageSize,
       sorted,
       search: this.searchEl.value });

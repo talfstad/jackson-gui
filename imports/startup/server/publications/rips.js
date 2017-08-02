@@ -3,12 +3,35 @@ import moment from 'moment';
 import { Roles } from 'meteor/alanning:roles';
 import { check } from 'meteor/check';
 import { Counter } from 'meteor/natestrauser:publish-performant-counts';
-import { Rips } from '/imports/api/meteor/collections';
+import {
+  Rips,
+  Offers,
+} from '/imports/api/meteor/collections';
+
 import {
   RIPS_SUB,
   RIPS_COUNT_SUB,
   RIP_EDIT_SUB,
+  AVAILABLE_OFFERS_FOR_RIP_SUB,
 } from '/imports/actions/rips';
+
+Meteor.publish(AVAILABLE_OFFERS_FOR_RIP_SUB, function ({ userId }) {
+  // Admin query
+  if (Roles.userIsInRole(this.userId, 'admin')) {
+    return Offers.find({
+      userId,
+    }, {
+      sort: { name: 1 },
+    });
+  }
+
+  // NON-Admin query only can get their offers
+  return Offers.find({
+    userId: this.userId,
+  }, {
+    sort: { name: 1 },
+  });
+});
 
 Meteor.publish(RIPS_SUB, function ({ page, pageSize, sorted, search }) {
   // Map the array that comes in from react tables to the sort object

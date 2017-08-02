@@ -4,12 +4,16 @@ import {
   stopSubscription,
 } from 'meteor-redux-middlewares';
 
-// import OfferValidationSchema from '/imports/api/meteor/schemas/validation/add-new-offer';
+import RipValidationSchema from '/imports/api/meteor/schemas/validation/edit-rip';
 
-import { Rips } from '/imports/api/meteor/collections';
+import { Rips, Offers } from '/imports/api/meteor/collections';
 
 export const RIPS_COUNT_SUB = 'RIPS_COUNT';
 export const RIPS_COUNT_SUBSCRIPTION_CHANGED = `${RIPS_COUNT_SUB}_SUBSCRIPTION_CHANGED`;
+
+export const AVAILABLE_OFFERS_FOR_RIP_SUB = 'USER_OFFERS';
+export const AVAILABLE_OFFERS_FOR_RIP_SUBSCRIPTION_CHANGED = `${AVAILABLE_OFFERS_FOR_RIP_SUB}_SUBSCRIPTION_CHANGED`;
+export const AVAILABLE_OFFERS_FOR_RIP_SUBSCRIPTION_READY = `${AVAILABLE_OFFERS_FOR_RIP_SUB}_SUBSCRIPTION_READY`;
 
 export const RIPS_SUB = 'RIPS';
 export const RIPS_SUBSCRIPTION_READY = `${RIPS_SUB}_SUBSCRIPTION_READY`;
@@ -26,6 +30,15 @@ export const UPDATE_EDIT_RIP_VALUES = 'UPDATE_EDIT_RIP_VALUES';
 export const RIP_EDIT_SUB = 'RIP_EDIT_SUB';
 export const RIP_EDIT_SUBSCRIPTION_READY = `${RIP_EDIT_SUB}_SUBSCRIPTION_READY`;
 export const RIP_EDIT_SUBSCRIPTION_CHANGED = `${RIP_EDIT_SUB}_SUBSCRIPTION_CHANGED`;
+
+export const subscribeToAvailableOffersForThisRip = ({ userId }) => (dispatch) => {
+  dispatch(stopSubscription(AVAILABLE_OFFERS_FOR_RIP_SUB));
+  dispatch(startSubscription({
+    key: AVAILABLE_OFFERS_FOR_RIP_SUB,
+    subscribe: () => Meteor.subscribe(AVAILABLE_OFFERS_FOR_RIP_SUB, { userId }),
+    get: () => Offers.find().fetch({ userId }),
+  }));
+};
 
 export const subscribeToEditRip = ({ ripId }) => (
   startSubscription({
@@ -83,43 +96,44 @@ export const stopRipsSub = () => (dispatch) => {
 export const stopEditRipSub = () => stopSubscription(RIP_EDIT_SUB);
 
 export const editRip = (ripValues, callback) => (dispatch) => {
-  console.log('edit rip action fired TODO');
-  // const {
-  //   name,
-  //   url,
-  // } = offerValues;
-  //
-  // const editOfferValidationSchema = OfferValidationSchema.namedContext();
-  // editOfferValidationSchema.validate({ name, url });
-  //
-  // if (editOfferValidationSchema.isValid()) {
-  //   Meteor.call('editOffer', offerValues, (error) => {
-  //     if (error) {
-  //       dispatch({
-  //         type: ADD_NEW_OFFER_ERRORS,
-  //         payload: [{
-  //           name: 'name',
-  //           message: error.reason,
-  //         }],
-  //       });
-  //     } else {
-  //       dispatch({
-  //         type: ADD_NEW_OFFER_ERRORS,
-  //         payload: [],
-  //       });
-  //       callback();
-  //     }
-  //   });
-  // } else {
-  //   // Map simplschema validation errors to error messages
-  //   const validationErrors = _.map(editOfferValidationSchema.validationErrors(), o =>
-  //     _.extend({ message: editOfferValidationSchema.keyErrorMessage(o.name) }, o));
-  //
-  //   return dispatch({
-  //     type: ADD_NEW_OFFER_ERRORS,
-  //     payload: validationErrors,
-  //   });
-  // }
+  const {
+    _id,
+    offer,
+    take_rate,
+    userId,
+  } = ripValues;
+
+  const editRipValidationSchema = RipValidationSchema.namedContext();
+  editRipValidationSchema.validate({ take_rate });
+
+  if (editRipValidationSchema.isValid()) {
+    Meteor.call('editRip', ({ _id, userId, offer, take_rate }), (error) => {
+      if (error) {
+        dispatch({
+          type: ADD_NEW_RIP_ERRORS,
+          payload: [{
+            name: 'take_rate',
+            message: error.reason,
+          }],
+        });
+      } else {
+        dispatch({
+          type: ADD_NEW_RIP_ERRORS,
+          payload: [],
+        });
+        callback();
+      }
+    });
+  } else {
+    // Map simplschema validation errors to error messages
+    const validationErrors = _.map(editRipValidationSchema.validationErrors(), o =>
+      _.extend({ message: editRipValidationSchema.keyErrorMessage(o.name) }, o));
+
+    return dispatch({
+      type: ADD_NEW_RIP_ERRORS,
+      payload: validationErrors,
+    });
+  }
 };
 
 export const updateEditValues = values => ({

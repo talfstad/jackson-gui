@@ -10,6 +10,7 @@ class OfferSelectInput extends Component {
     $('.bs-select').selectpicker({
       iconBase: 'fa',
       tickIcon: 'fa-check',
+      useEmpty: true,
     });
   }
 
@@ -18,15 +19,16 @@ class OfferSelectInput extends Component {
   }
 
   buildOfferList() {
-    const { users } = this.props;
-    return users.map(user => (
+    const { offers } = this.props;
+    return offers.map(offer => (
       <option
-        key={user._id}
-        value={user._id}
-        data-offer-name={user.name}
-        data-offer-id={user._id}
+        key={offer._id}
+        value={offer._id}
+        data-offer-id={offer._id}
+        data-offer-name={offer.name}
+        data-offer-url={offer.url}
       >
-        {user.name}
+        {offer.name}
       </option>
     ));
   }
@@ -35,10 +37,13 @@ class OfferSelectInput extends Component {
     e.preventDefault();
     const { handleOnChange } = this.props;
 
+    const selectedOption = this.el.options[this.el.selectedIndex];
+
     handleOnChange({
       offer: {
         _id: this.el.value,
-        url: this.el.getAttribute('data-offer-name'),
+        name: selectedOption.getAttribute('data-offer-name'),
+        url: selectedOption.getAttribute('data-offer-url'),
       },
     });
   }
@@ -54,12 +59,13 @@ class OfferSelectInput extends Component {
         <label htmlFor="offer-user">Current Offer</label>
         <select
           ref={(c) => { this.el = c; }}
-          onChange={this.handleOnChange}
+          onChange={e => this.handleOnChange(e)}
           value={selectedValue || ''}
           className="bs-select form-control"
           data-live-search="true"
           data-size="8"
         >
+          <option data-hidden="true" />
           {this.buildOfferList()}
         </select>
         {errorForField}
@@ -72,7 +78,7 @@ OfferSelectInput.propTypes = {
   handleOnChange: PropTypes.func,
   errorForField: PropTypes.shape({}),
   selectedValue: PropTypes.string,
-  users: PropTypes.arrayOf(PropTypes.object),
+  offers: PropTypes.arrayOf(PropTypes.object),
 };
 
 OfferSelectInput.defaultProps = {
@@ -80,7 +86,7 @@ OfferSelectInput.defaultProps = {
   selectedValue: null,
   errorForField: {},
   getErrorForField: null,
-  users: [],
+  offers: [],
 };
 
 export default RenderIfAdmin(OfferSelectInput);

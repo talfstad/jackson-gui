@@ -69,7 +69,7 @@ class Base extends Component {
     const {
       handleModalAction,
       modalTitle,
-      users,
+      offers,
       handleOnChange,
     } = this.props;
 
@@ -89,15 +89,15 @@ class Base extends Component {
               </div>
               <div className="modal-body">
                 <TakeRateInput
-                  errorForField={this.getErrorForField('take_rate', 'This is the percentage of traffic you will take from this landing page and send to your offer.')}
+                  errorField={this.getErrorForField('take_rate', 'This is the percentage of traffic you will take from this landing page and send to your offer.')}
                   value={this.getDefaultValueForField('take_rate')}
                   handleOnChange={handleOnChange}
                 />
                 <OfferSelectInput
                   inputRef={(c) => { this.offerUserInput = c; }}
-                  users={users}
+                  offers={offers}
                   selectedValue={this.getDefaultValueForField('offer')}
-                  errorForField={this.getErrorForField('offer', `This is the list of all offers for ${this.getDefaultValueForField('userName') || ''}. Select where to send traffic.`)}
+                  errorForField={this.getErrorForField('offer', `This is the list of all available offers for ${this.getDefaultValueForField('userName') || ''}. Select where to send traffic.`)}
                   handleOnChange={handleOnChange}
                 />
               </div>
@@ -115,7 +115,7 @@ class Base extends Component {
 
 Base.propTypes = {
   history: PropTypes.shape({}),
-  users: PropTypes.arrayOf(PropTypes.object),
+  offers: PropTypes.arrayOf(PropTypes.object),
   modalTitle: PropTypes.string,
   handleOnChange: PropTypes.func,
   handleModalAction: PropTypes.func,
@@ -131,7 +131,7 @@ Base.defaultProps = {
   handleModalAction: null,
   modalRedirectRouteOnClose: '/',
   history: {},
-  users: [],
+  offers: [],
   errors: [],
 };
 

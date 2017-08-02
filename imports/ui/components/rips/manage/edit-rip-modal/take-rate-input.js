@@ -24,7 +24,7 @@ class TakeRateInput extends Component {
     });
 
     this.takeRateEl.noUiSlider.on('slide', ([newValue]) => {
-      handleOnChange({ take_rate: Math.floor(newValue) });
+      handleOnChange({ take_rate: (Math.floor(newValue) / 100) });
     });
   }
 
@@ -42,13 +42,16 @@ class TakeRateInput extends Component {
   }
 
   render() {
-    const { value } = this.props;
+    const {
+      value,
+      errorField,
+    } = this.props;
 
     return (
       <div className="take-rate-input form-group">
         <label htmlFor="take_rate">Take Rate: {value}%</label>
         <div className="mb10">
-          {this.props.errorForField}
+          {errorField}
         </div>
         <div className="take-rate-slider-wrapper">
           <div
@@ -64,13 +67,13 @@ class TakeRateInput extends Component {
 TakeRateInput.propTypes = {
   value: PropTypes.number,
   handleOnChange: PropTypes.func,
-  errorForField: PropTypes.string,
+  errorField: PropTypes.shape({}),
 };
 
 TakeRateInput.defaultProps = {
   value: 0,
   handleOnChange: null,
-  errorForField: null,
+  errorField: {},
 };
 
 export default TakeRateInput;

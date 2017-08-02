@@ -29,13 +29,12 @@ class ManageWhitelist extends Component {
     const { fetchWhitelistedDomainsAction } = this.props;
 
     const {
-      page,
       pageSize,
       sorted,
     } = this.props;
 
     fetchWhitelistedDomainsAction({
-      page,
+      page: 0,
       pageSize,
       sorted,
       search: this.searchEl.value });

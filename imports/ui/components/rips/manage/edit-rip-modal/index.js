@@ -8,6 +8,7 @@ import {
   subscribeToEditRip,
   updateEditValues,
   stopEditRipSub,
+  subscribeToAvailableOffersForThisRip,
 } from '/imports/actions/rips';
 
 import Base from './base';
@@ -16,16 +17,18 @@ class EditRipModal extends Component {
   componentWillMount() {
     const {
       subscribeToEditRipAction,
-      match: { params: { ripId } },
+      subscribeToAvailableOffersForThisRipAction,
+      match: { params: { ripId, userId } },
       history,
     } = this.props;
 
     // Intent: Redirect if we don't have an
     // rip id to edit.
-    if (_.isUndefined(ripId)) {
+    if (_.isUndefined(ripId) || _.isUndefined(userId)) {
       history.push('/rips/manage');
     }
 
+    subscribeToAvailableOffersForThisRipAction({ userId });
     subscribeToEditRipAction({ ripId });
   }
 
@@ -41,14 +44,15 @@ class EditRipModal extends Component {
 
   getDefaultValues() {
     const { ripValues } = this.props;
+
     return ([
       {
         name: 'take_rate',
-        value: ripValues.take_rate,
+        value: Math.floor(ripValues.take_rate * 100),
       },
       {
         name: 'offer',
-        value: _.isUndefined(ripValues.offer) ? null : ripValues.offer.name,
+        value: _.isUndefined(ripValues.offer) ? null : ripValues.offer._id,
       },
       {
         name: 'userName',
@@ -61,7 +65,6 @@ class EditRipModal extends Component {
     const {
       updateEditValuesAction,
     } = this.props;
-
     updateEditValuesAction(values);
   }
 
@@ -83,6 +86,7 @@ class EditRipModal extends Component {
       history,
       errors,
       ripValues,
+      availableOffersForThisRip,
     } = this.props;
 
     let modalTitle = ripValues.url;
@@ -105,6 +109,7 @@ class EditRipModal extends Component {
         handleModalAction={e => this.handleEditRip(e)}
         handleOnChange={values => this.handleOnChange(values)}
         modalTitle={modalTitle}
+        offers={availableOffersForThisRip}
         modalRedirectRouteOnClose="/rips/manage"
         errors={errors}
       />
@@ -121,12 +126,16 @@ EditRipModal.propTypes = {
   subscribeToEditRipAction: PropTypes.func,
   match: PropTypes.shape({}),
   updateEditValuesAction: PropTypes.func,
+  availableOffersForThisRip: PropTypes.arrayOf(PropTypes.object),
+  subscribeToAvailableOffersForThisRipAction: PropTypes.func,
 };
 
 EditRipModal.defaultProps = {
   subscribeToEditRipAction: null,
   stopEditRipSubAction: null,
   editRipAction: null,
+  availableOffersForThisRip: [],
+  subscribeToAvailableOffersForThisRipAction: null,
   ripValues: {
     offer: {
       name: '',
@@ -142,6 +151,7 @@ EditRipModal.defaultProps = {
 const mapStateToProps = state => ({
   errors: state.rips.addNewErrors,
   ripValues: state.rips.editRip,
+  availableOffersForThisRip: state.rips.availableOffersForThisRip,
 });
 
 const actions = {
@@ -149,6 +159,7 @@ const actions = {
   stopEditRipSubAction: stopEditRipSub,
   updateEditValuesAction: updateEditValues,
   subscribeToEditRipAction: subscribeToEditRip,
+  subscribeToAvailableOffersForThisRipAction: subscribeToAvailableOffersForThisRip,
 };
 
 export default connect(mapStateToProps, actions)(EditRipModal);
