@@ -21,9 +21,9 @@ class OfferSelectInput extends Component {
     const { offers } = this.props;
     return offers.map(offer => (
       <option
-        key={offer._id}
-        value={offer._id}
-        data-offer-id={offer._id}
+        key={offer._id._str}
+        value={offer._id._str}
+        data-offer-id={offer._id._str}
         data-offer-name={offer.name}
         data-offer-url={offer.url}
       >
@@ -40,7 +40,7 @@ class OfferSelectInput extends Component {
 
     handleOnChange({
       offer: {
-        _id: this.el.value,
+        _id: selectedOption.getAttribute('data-offer-id'),
         name: selectedOption.getAttribute('data-offer-name'),
         url: selectedOption.getAttribute('data-offer-url'),
       },
@@ -64,7 +64,7 @@ class OfferSelectInput extends Component {
           data-live-search="true"
           data-size="8"
         >
-          <option data-hidden="true" />
+          <option key="hidden" data-hidden="true" />
           {this.buildOfferList()}
         </select>
         {errorForField}
