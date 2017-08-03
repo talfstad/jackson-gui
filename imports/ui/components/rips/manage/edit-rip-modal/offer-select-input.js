@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import RenderIfAdmin from '/imports/ui/components/auth/hocs/render-if-admin';
 
 import 'bootstrap-select';
 import 'bootstrap-select/dist/css/bootstrap-select.min.css';
@@ -89,4 +88,4 @@ OfferSelectInput.defaultProps = {
   offers: [],
 };
 
-export default RenderIfAdmin(OfferSelectInput);
+export default OfferSelectInput;

@@ -49,7 +49,7 @@ class TakeRateInput extends Component {
 
     return (
       <div className="take-rate-input form-group">
-        <label htmlFor="take_rate">Take Rate: {value}%</label>
+        <label htmlFor="take_rate">Jack Rate: {value}%</label>
         <div className="mb10">
           {errorField}
         </div>

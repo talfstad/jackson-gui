@@ -144,7 +144,7 @@ class ManageRipsTable extends Component {
         ),
       },
       {
-        Header: 'Take Rate',
+        Header: 'Jack Rate',
         accessor: 'take_rate',
         maxWidth: 90,
         Cell: ({ row }) => (
