@@ -36,7 +36,7 @@ class AddNewModal extends Component {
       whitelistedUserInput,
     } = this.baseEl;
 
-    const name = whitelistedDomainNameInput.value;
+    const name = (whitelistedDomainNameInput.value || '').replace(/^https?:\/\//, '');
 
     let userId = null;
     let userName = null;
