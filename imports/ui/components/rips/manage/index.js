@@ -14,6 +14,7 @@ import {
 
 import ManageRipsTable from './manage-rips-table';
 import EditRip from './edit-rip-modal';
+import WhitelistRip from './whitelist-rip-modal';
 
 class ManageRips extends Component {
   componentWillUnmount() {
@@ -104,6 +105,11 @@ class ManageRips extends Component {
           exact
           path={`${match.url}/edit/:ripId/:userId`}
           component={EditRip}
+        />
+        <Route
+          exact
+          path={`${match.url}/whitelist`}
+          component={WhitelistRip}
         />
       </div>
     );

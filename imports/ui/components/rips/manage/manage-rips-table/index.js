@@ -189,10 +189,23 @@ class ManageRipsTable extends Component {
           } = row;
 
           return (
-            <div className="text-align-center">
+            <div>
               <Link to={`/rips/manage/edit/${original._id}/${original.userId}`}>
                 <i className="fa fa-edit" />
               </Link>
+              { original.domain ?
+                <Link
+                  to={{
+                    pathname: '/rips/manage/whitelist',
+                    state: original,
+                  }}
+                  className="ml10"
+                >
+                  <i className="icon-shield" />
+                </Link>
+              :
+                <noscript />
+              }
             </div>
           );
         },
