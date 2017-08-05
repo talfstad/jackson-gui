@@ -169,7 +169,7 @@ class ManageRipsTable extends Component {
         width: 150,
       },
       {
-        Header: 'Updated',
+        Header: 'Last Traffic',
         accessor: 'last_updated',
         width: 150,
         Cell: ({ row }) => (

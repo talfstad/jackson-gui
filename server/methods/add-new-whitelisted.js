@@ -24,6 +24,7 @@ Meteor.methods({
           name,
           userName,
           userId,
+          createdOn: new Date(),
         });
       } else {
         const user = Users.findOne({
@@ -39,6 +40,7 @@ Meteor.methods({
           name,
           userName: user.name,
           userId: user._id,
+          createdOn: new Date(),
         });
       }
       // whitelist all rips with this domain.

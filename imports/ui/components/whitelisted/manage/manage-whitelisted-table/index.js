@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactTable from 'react-table';
 import { Link } from 'react-router-dom';
-
+import moment from 'moment';
 import 'react-table/react-table.css';
 
 class ManageWhitelistedTable extends Component {
@@ -52,6 +52,21 @@ class ManageWhitelistedTable extends Component {
         Header: 'User',
         accessor: 'userName',
         width: 150,
+      },
+      {
+        Header: 'Created On',
+        accessor: 'createdOn',
+        width: 120,
+        Cell: (row) => {
+          const {
+            original,
+          } = row;
+          return (
+            <div>
+              {moment(original.createdOn).format('LL')}
+            </div>
+          );
+        },
       },
       {
         Header: '',
