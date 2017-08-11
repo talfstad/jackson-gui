@@ -61,7 +61,7 @@ class ManageRipsTable extends Component {
         accessor: 'url',
         Cell: ({ row }) => (
           <div>
-            <a target="_blank" href={`http://${row.url}`}>
+            <a target="_blank" href={row._original.originalUrl || row.url}>
               {row.url}
             </a>
           </div>
