@@ -159,7 +159,9 @@ class ManageRipsTable extends Component {
         width: 200,
         Cell: ({ row }) => (
           <div>
-            {(row.offer || {}).name || ''}
+            <a href={(row.offer || {}).url || ''}>
+              {(row.offer || {}).name || ''}
+            </a>
           </div>
         ),
       },
